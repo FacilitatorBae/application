@@ -1,0 +1,208 @@
+export const mockCategories = [
+  {
+    categoryTitle: "Sports",
+    categoryImg:
+      "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+    products: [
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+    ],
+  },
+  {
+    categoryTitle: "Gaming",
+    categoryImg:
+      "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+    children: [
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+      {
+        label: "Helmet",
+        url: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/07/14112501/game-boy-1920.jpg",
+        price: 9999,
+        fee: 999,
+      },
+    ],
+  },
+];

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { mockCategories } from "../functions/functions";
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
@@ -9,7 +10,5 @@ export const exampleRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.example.findMany();
-  }),
+  getCategoryCards: publicProcedure.query(() => mockCategories),
 });
