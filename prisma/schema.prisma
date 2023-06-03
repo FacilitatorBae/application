@@ -14,17 +14,29 @@ datasource db {
 }
 
 model Product {
-    id       Int      @id @default(autoincrement())
-    label    String
-    url      String
-    price    Int
-    fee      Int
-    owner    String   @default("Germán Beder")
-    category Category @default(General)
+    id          Int       @id @default(autoincrement())
+    owner       String    @default("Germán Beder")
+    title       String
+    categoryId  Int
+    description String?
+    images      String?
+    price       Int
+    fee         Int
+    isHot       Boolean
+    isBusiness  Boolean
+    isNew       Boolean
+    createdAt   DateTime  @default(now())
+    modifiedAt  DateTime  @updatedAt
+    deletedAt   DateTime?
+    category    Category  @relation(fields: [categoryId], references: [id])
 }
 
-enum Category {
-    General
-    Sports
-    Gaming
+model Category {
+    id         Int       @id @default(autoincrement())
+    name       String
+    parent     String?
+    createdAt  DateTime  @default(now())
+    modifiedAt DateTime  @updatedAt
+    deletedAt  DateTime?
+    Product    Product[]
 }
