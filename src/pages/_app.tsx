@@ -5,6 +5,7 @@ import "~/styles/globals.css";
 import { Footer, Header } from "~/components";
 import { SessionProvider } from "next-auth/react";
 import { type Session } from "next-auth";
+import AppContext from "../context/AppContext";
 
 const poppins = Poppins({
   weight: ["300", "500", "700"],
@@ -30,13 +31,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <main
-        className={`${poppins.variable} ${comfortaa.variable} ${inter.variable} min-h-screen bg-[#EBEBEB]`}
-      >
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
-      </main>
+      <AppContext>
+        <main
+          className={`${poppins.variable} ${comfortaa.variable} ${inter.variable} min-h-screen bg-[#EBEBEB]`}
+        >
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
+        </main>
+      </AppContext>
     </SessionProvider>
   );
 };

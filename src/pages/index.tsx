@@ -1,4 +1,6 @@
 // import { api } from "~/utils/api";
+import { useContext } from "react";
+import { Context } from "./../context/AppContext";
 import { ProductList } from "../components";
 import type { FakeProduct } from "../types";
 import { signIn, signOut, useSession } from "next-auth/react";

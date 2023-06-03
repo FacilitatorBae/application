@@ -1,27 +1,44 @@
-import { Menu, MenuHandler, MenuList, MenuItem, Button } from "@material-tailwind/react";
+import {
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+  Button,
+} from "@material-tailwind/react";
 import { IoSearch } from "react-icons/io5";
 import { BiShoppingBag } from "react-icons/bi";
 import { MdOutlineExpandMore } from "react-icons/md";
+import { menuItemsLabel, menuItemsFields } from "./models";
+import { useSession } from "next-auth/react";
+
+const { MY_PROFILE, MY_ORDERS, LOGOUT, LOGIN } = menuItemsFields;
 
 const Header = () => {
+  const { data: sessionData, status } = useSession();
+  console.log({ sessionData });
+
+  const onMenuItemClick = (item: string) => {
+    console.log(item);
+  };
+
   return (
     <>
-      <div className="bg-blue-brand flex justify-center p-2 font-inter text-white text-xs">
+      <div className="flex justify-center bg-blue-brand p-2 font-inter text-xs text-white">
         Get the offer of 50% on your first 3 orders
       </div>
-      <header className="px-4 shadow-lg bg-white">
-        <div className="container mx-auto flex justify-between items-center py-4">
-          <div className="flex justify-start w-1/4">
+      <header className="bg-white px-4 shadow-lg">
+        <div className="container mx-auto flex items-center justify-between py-4">
+          <div className="flex w-1/4 justify-start">
             <a href="#">
-              <span className="text-2xl font-comfortaa">tOUHU</span>
+              <span className="font-comfortaa text-2xl">tOUHU</span>
             </a>
           </div>
           <div className="flex-1 px-7">
-            <form className="flex items-center max-w-lg mx-auto">
+            <form className="mx-auto flex max-w-lg items-center">
               <div className="relative w-full">
                 <input
                   type="text"
-                  className="focus:outline-none bg-gray-50 border border-gray-300 focus:ring-blue-brand focus:border-blue-brand text-sm block w-full pr-10 p-2 "
+                  className="block w-full border border-gray-300 bg-gray-50 p-2 pr-10 text-sm focus:border-blue-brand focus:outline-none focus:ring-blue-brand "
                   placeholder="Search"
                 />
                 <button
@@ -33,26 +50,52 @@ const Header = () => {
               </div>
             </form>
           </div>
-          <div className="flex items-center justify-end space-x-8 w-1/4">
-            <button className="group/cart relative flex justify-center items-center w-[38px] aspect-square text-2xl hover:bg-blue-brand hover:text-white">
+          <div className="flex w-1/4 items-center justify-end space-x-8">
+            <button className="group/cart aspect-square relative flex w-[38px] items-center justify-center text-2xl hover:bg-blue-brand hover:text-white">
               <BiShoppingBag />
-              <div className="absolute right-2 bottom-2 w-2.5 aspect-square rounded-full bg-blue-brand group-hover/cart:bg-white" />
+              <div className="aspect-square absolute bottom-2 right-2 w-2.5 rounded-full bg-blue-brand group-hover/cart:bg-white" />
             </button>
             <Menu placement="bottom-end">
               <MenuHandler>
                 {/* <Button variant="gradient">Bottom End</Button> */}
-                <button className="flex justify-center items-center">
+                <button className="flex items-center justify-center">
                   <span className="font-poppins text-sm">My Account</span>
                   <span className="text-2xl">
                     <MdOutlineExpandMore />
                   </span>
                 </button>
               </MenuHandler>
-              <MenuList className="rounded-none">
-                <MenuItem>Menu Item 1</MenuItem>
-                <MenuItem>Menu Item 2</MenuItem>
-                <MenuItem>Menu Item 3</MenuItem>
-              </MenuList>
+              {status === "authenticated" ? (
+                <MenuList className="rounded-none">
+                  <MenuItem
+                    onClick={onMenuItemClick.bind(null, MY_PROFILE)}
+                    className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white"
+                  >
+                    {menuItemsLabel[MY_PROFILE]?.label}
+                  </MenuItem>
+                  <MenuItem
+                    onClick={onMenuItemClick.bind(null, MY_ORDERS)}
+                    className="flex justify-start rounded-none  hover:bg-blue-brand hover:text-white"
+                  >
+                    {menuItemsLabel[MY_ORDERS]?.label}
+                  </MenuItem>
+                  <MenuItem
+                    onClick={onMenuItemClick.bind(null, LOGOUT)}
+                    className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white"
+                  >
+                    {menuItemsLabel[LOGOUT]?.label}
+                  </MenuItem>
+                </MenuList>
+              ) : (
+                <MenuList className="rounded-none">
+                  <MenuItem
+                    onClick={onMenuItemClick.bind(null, LOGIN)}
+                    className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white"
+                  >
+                    {menuItemsLabel[LOGIN]?.label}
+                  </MenuItem>
+                </MenuList>
+              )}
             </Menu>
           </div>
         </div>
