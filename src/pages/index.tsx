@@ -1,7 +1,7 @@
-import { api } from "~/utils/api";
+// import { api } from "~/utils/api";
 import { ProductList } from "../components";
 import type { FakeProduct } from "../types";
-import { Category } from "@prisma/client";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const fakeProducts: FakeProduct[] = [
   {
@@ -76,12 +76,30 @@ const fakeProducts: FakeProduct[] = [
   },
 ];
 const Home = () => {
-  const { data: products } = api.products.getAllProducts.useQuery();
-  console.log({ products: products });
+  // const { data: products } = api.products.getAllProducts.useQuery();
+  // console.log({ products: products });
+  const { data: sessionData, status } = useSession();
+  console.log({ sessionData });
 
   return (
     <section className="container mx-auto mt-16 px-4 sm:px-0">
       <ProductList products={fakeProducts} />
+      {status === "unauthenticated" && (
+        <button
+          onClick={() => void signIn()}
+          className="flex justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+        >
+          Login
+        </button>
+      )}
+      {status === "authenticated" && (
+        <button
+          onClick={() => void signOut()}
+          className="flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+        >
+          Logout
+        </button>
+      )}
     </section>
   );
 };

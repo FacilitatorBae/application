@@ -3,6 +3,8 @@ import { api } from "~/utils/api";
 import { Poppins, Comfortaa, Inter } from "@next/font/google";
 import "~/styles/globals.css";
 import { Footer, Header } from "~/components";
+import { SessionProvider } from "next-auth/react";
+import { type Session } from "next-auth";
 
 const poppins = Poppins({
   weight: ["300", "500", "700"],
@@ -22,16 +24,20 @@ const comfortaa = Comfortaa({
   variable: "--font-comfortaa",
 });
 
-const MyApp: AppType = ({ Component, pageProps }) => {
-  // return <Component {...pageProps} />;
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   return (
-    <main
-      className={`${poppins.variable} ${comfortaa.variable} ${inter.variable} min-h-screen bg-[#EBEBEB]`}
-    >
-      <Header />
-      <Component {...pageProps} />
-      <Footer />
-    </main>
+    <SessionProvider session={session}>
+      <main
+        className={`${poppins.variable} ${comfortaa.variable} ${inter.variable} min-h-screen bg-[#EBEBEB]`}
+      >
+        <Header />
+        <Component {...pageProps} />
+        <Footer />
+      </main>
+    </SessionProvider>
   );
 };
 
