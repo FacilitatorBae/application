@@ -4,19 +4,24 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
+import FavItem from "./Item/FavItem";
 import { useContext } from "react";
-import { Context } from "./../context/AppContext";
+import { Context } from "../../context/AppContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const Favorites = () => {
   const { favorites, setFavorites } = useContext(Context);
 
+  const favItems = favorites?.items?.map((item) => (
+    <div key={item.id} className="mt-5 flex h-20 w-full flex-row	">
+      <FavItem item={item} />
+    </div>
+  ));
+
   const onCloseClick = () => {
     setFavorites((prev: any) => ({ ...prev, isOpen: false }));
   };
-
-  console.log(favorites.isOpen);
 
   return (
     <Drawer
@@ -45,7 +50,7 @@ const Favorites = () => {
           Favorites
         </Typography>
         <div className="text-align: center">
-          <span>No hay una mierda</span>
+          {favorites?.items?.length ? favItems : <span>No hay una basu</span>}
         </div>
       </div>
     </Drawer>

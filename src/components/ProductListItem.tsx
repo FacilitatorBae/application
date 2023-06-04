@@ -1,16 +1,39 @@
 import { Badge } from "~/components";
 import { FcGlobe } from "react-icons/fc";
 import { type FakeProduct } from "~/types";
+import { BiHeart } from "react-icons/bi";
+import { useContext } from "react";
+import { Context } from "./../context/AppContext";
 
 interface ProductListItemProps {
   product: FakeProduct;
 }
 
 const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
+  const { favorites, setFavorites } = useContext(Context);
+
+  const onFavClick = () => {
+    if (Array.isArray(favorites.items)) {
+      console.log(favorites.items);
+      const newFavArray = favorites.items;
+      newFavArray.push(product);
+      setFavorites((prev: any) => ({
+        ...prev,
+        items: newFavArray,
+      }));
+    }
+  };
+
   return (
     <div className="group relative mb-8 w-full cursor-pointer shadow-md transition duration-300 hover:shadow-xl">
       <div className="aspect-h-1 aspect-w-1 overflow-hidden md:aspect-h-16 md:aspect-w-15">
-        <picture>
+        <picture className="relative">
+          <button
+            onClick={onFavClick}
+            className="absolute right-0 mr-5 mt-5 opacity-0 group-hover:opacity-[100%]"
+          >
+            <BiHeart />
+          </button>
           <img
             src={product.image}
             alt={product.title}

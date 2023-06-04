@@ -1,5 +1,5 @@
 import Image from "next/image";
-import CardItems from "./Items/CardItems";
+import CardItem from "./Item/CardItem";
 
 interface CategoryCardProps {
   categoryTitle: string;
@@ -14,7 +14,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
 }) => {
   const productItems = products?.map((item) => (
     <div key={item.label} className="relative aspect-[1/1] h-1/2">
-      <CardItems
+      <CardItem
         label={item.label}
         url={item.url}
         price={item.price}
