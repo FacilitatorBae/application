@@ -1,6 +1,4 @@
 // import { api } from "~/utils/api";
-import { useContext } from "react";
-import { Context } from "./../context/AppContext";
 import { ProductList } from "../components";
 import type { FakeProduct } from "../types";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -81,7 +79,6 @@ const Home = () => {
   // const { data: products } = api.products.getAllProducts.useQuery();
   // console.log({ products: products });
   const { data: sessionData, status } = useSession();
-  console.log({ sessionData });
 
   return (
     <section className="container mx-auto mt-16 px-4 sm:px-0">

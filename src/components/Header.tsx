@@ -6,19 +6,40 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { IoSearch } from "react-icons/io5";
-import { BiShoppingBag } from "react-icons/bi";
+import { BiHeart } from "react-icons/bi";
+import { useContext } from "react";
+import { Context } from "./../context/AppContext";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { menuItemsLabel, menuItemsFields } from "./models";
-import { useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const { MY_PROFILE, MY_ORDERS, LOGOUT, LOGIN } = menuItemsFields;
 
 const Header = () => {
   const { data: sessionData, status } = useSession();
+  const { setFavorites } = useContext(Context);
+
+  const onFavsClick = () => {
+    setFavorites((prev: any) => ({ ...prev, isOpen: true }));
+  };
+
   console.log({ sessionData });
 
   const onMenuItemClick = (item: string) => {
-    console.log(item);
+    switch (item) {
+      case MY_PROFILE:
+        break;
+      case MY_ORDERS:
+        break;
+      case LOGOUT:
+        signOut();
+        break;
+      case LOGIN:
+        signIn();
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -51,8 +72,11 @@ const Header = () => {
             </form>
           </div>
           <div className="flex w-1/4 items-center justify-end space-x-8">
-            <button className="group/cart aspect-square relative flex w-[38px] items-center justify-center text-2xl hover:bg-blue-brand hover:text-white">
-              <BiShoppingBag />
+            <button
+              onClick={onFavsClick}
+              className="group/cart aspect-square relative flex w-[38px] items-center justify-center text-2xl hover:bg-blue-brand hover:text-white"
+            >
+              <BiHeart />
               <div className="aspect-square absolute bottom-2 right-2 w-2.5 rounded-full bg-blue-brand group-hover/cart:bg-white" />
             </button>
             <Menu placement="bottom-end">
@@ -87,10 +111,10 @@ const Header = () => {
                   </MenuItem>
                 </MenuList>
               ) : (
-                <MenuList className="rounded-none">
+                <MenuList className="w-[100px] rounded-none">
                   <MenuItem
                     onClick={onMenuItemClick.bind(null, LOGIN)}
-                    className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white"
+                    className="flex  justify-start rounded-none hover:bg-blue-brand hover:text-white"
                   >
                     {menuItemsLabel[LOGIN]?.label}
                   </MenuItem>

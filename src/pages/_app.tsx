@@ -2,10 +2,13 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import { Poppins, Comfortaa, Inter } from "@next/font/google";
 import "~/styles/globals.css";
-import { Footer, Header } from "~/components";
+import { Footer, Header, Favorites } from "~/components";
 import { SessionProvider } from "next-auth/react";
 import { type Session } from "next-auth";
 import AppContext from "../context/AppContext";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
 
 const poppins = Poppins({
   weight: ["300", "500", "700"],
@@ -37,6 +40,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         >
           <Header />
           <Component {...pageProps} />
+          <Favorites />
           <Footer />
         </main>
       </AppContext>

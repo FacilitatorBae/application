@@ -2,14 +2,19 @@ import { createContext, useState } from "react";
 
 export const Context = createContext({} as ContextState);
 interface ContextState {
-  isAuth: boolean;
-  setIsAuth: any;
+  favorites: { isOpen: boolean; setIsOpen: any };
+  setFavorites: any;
 }
 
+const initialValueCart = {
+  isOpen: false,
+};
+
 const AppContext = ({ children }: any) => {
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [favorites, setFavorites] = useState<any>(initialValueCart);
+
   return (
-    <Context.Provider value={{ isAuth, setIsAuth }}>
+    <Context.Provider value={{ favorites, setFavorites }}>
       {children}
     </Context.Provider>
   );
