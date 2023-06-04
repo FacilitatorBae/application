@@ -13,9 +13,9 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
   const { favorites, setFavorites } = useContext(Context);
 
   const onFavClick = () => {
-    if (Array.isArray(favorites.items)) {
-      console.log(favorites.items);
-      const newFavArray = favorites.items;
+    const newFavArray = favorites.items;
+    const isItemFaved = newFavArray.find((item) => item.id === product.id);
+    if (Array.isArray(newFavArray) && !isItemFaved) {
       newFavArray.push(product);
       setFavorites((prev: any) => ({
         ...prev,

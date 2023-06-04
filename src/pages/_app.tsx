@@ -6,9 +6,6 @@ import { Footer, Header, Favorites } from "~/components";
 import { SessionProvider } from "next-auth/react";
 import { type Session } from "next-auth";
 import AppContext from "../context/AppContext";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
-config.autoAddCss = false;
 
 const poppins = Poppins({
   weight: ["300", "500", "700"],

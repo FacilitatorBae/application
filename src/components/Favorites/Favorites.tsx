@@ -7,8 +7,7 @@ import {
 import FavItem from "./Item/FavItem";
 import { useContext } from "react";
 import { Context } from "../../context/AppContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { BiX } from "react-icons/bi";
 
 const Favorites = () => {
   const { favorites, setFavorites } = useContext(Context);
@@ -33,14 +32,11 @@ const Favorites = () => {
     >
       <div className="flex-start flex flex-col pl-6">
         <Button
-          className="flex-start mt-[10px] flex flex-col pl-0"
+          className="flex-start mt-[10px] flex flex-col pl-0 text-3xl"
           variant="text"
           onClick={onCloseClick}
         >
-          <FontAwesomeIcon
-            icon={faClose}
-            style={{ color: "black", fontSize: 20 }}
-          />
+          <BiX />
         </Button>
         <Typography
           className="mt-[8px] font-bold"
