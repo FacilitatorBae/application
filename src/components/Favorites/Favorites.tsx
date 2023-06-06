@@ -13,7 +13,7 @@ const Favorites = () => {
   const { favorites, setFavorites } = useContext(Context);
 
   const favItems = favorites?.items?.map((item) => (
-    <div key={item.id} className="mt-5 flex h-20 w-full flex-row	">
+    <div key={item.id} className="mt-5 flex h-20 w-full flex-grow-0 flex-row	">
       <FavItem item={item} />
     </div>
   ));
@@ -45,8 +45,14 @@ const Favorites = () => {
         >
           Favorites
         </Typography>
-        <div className="text-align: center">
-          {favorites?.items?.length ? favItems : <span>No hay una basu</span>}
+        <div className="flex-start flex flex-grow flex-col overflow-hidden">
+          {favorites?.items?.length ? (
+            favItems
+          ) : (
+            <span className="flex h-[50vh] items-center justify-center">
+              Add some items to Favorites
+            </span>
+          )}
         </div>
       </div>
     </Drawer>

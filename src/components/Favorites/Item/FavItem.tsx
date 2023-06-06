@@ -28,7 +28,6 @@ const FavItem: React.FC<FavItemProps> = ({
         newFavArray.push(item);
       }
     });
-    console.log(newFavArray);
 
     setFavorites((prev: any) => ({ ...prev, items: newFavArray }));
   };
