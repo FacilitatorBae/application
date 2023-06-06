@@ -1,8 +1,19 @@
+import { fakeProducts } from "../index";
+import Item from "../../components/Item";
+
 export default function Post({ postData }) {
-  return <h1>{postData.title}</h1>;
+  return <Item products={postData} />;
 }
 
-const paths = [{ params: { id: "0" } }, { params: { id: "1" } }];
+const paths = [
+  { params: { id: "aaabbbccc1" } },
+  { params: { id: "aaabbbccc2" } },
+  { params: { id: "aaabbbccc3" } },
+  { params: { id: "aaabbbccc5" } },
+  { params: { id: "aaabbbccc6" } },
+  { params: { id: "aaabbbccc7" } },
+  { params: { id: "aaabbbccc8" } },
+];
 
 export async function getStaticPaths() {
   return {
@@ -12,12 +23,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const mockData = [
-    { id: "0", title: "test0" },
-    { id: "1", title: "test1" },
-  ];
-
-  const getPostData = (id) => mockData.find((item) => item.id === id);
+  const getPostData = (id) => fakeProducts.find((item) => item.id === id);
   const postData = getPostData(params.id);
   return {
     props: {

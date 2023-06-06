@@ -50,7 +50,7 @@ const Header = () => {
       <header className="bg-white px-4 shadow-lg">
         <div className="container mx-auto flex items-center justify-between py-4">
           <div className="flex w-1/4 justify-start">
-            <a href="#">
+            <a href="../">
               <span className="font-comfortaa text-2xl">tOUHU</span>
             </a>
           </div>

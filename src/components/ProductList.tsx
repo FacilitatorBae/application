@@ -11,11 +11,14 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
     <div className="grid grid-cols-1 justify-center gap-4 md:grid-cols-[repeat(auto-fit,minmax(300px,_1fr))]">
       {products && products.length > 0
-        ? products.map((product) => (
-            <Link key={product.id} href="/">
-              <ProductListItem product={product} />
-            </Link>
-          ))
+        ? products.map((product) => {
+            const url = `/items/${product?.id}`;
+            return (
+              <Link key={product.id} href={url}>
+                <ProductListItem product={product} />
+              </Link>
+            );
+          })
         : null}
     </div>
   );
