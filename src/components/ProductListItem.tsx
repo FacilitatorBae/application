@@ -14,7 +14,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
 
   const isItemFaved = useMemo(
     () => favorites.items.find((item) => item.id === product.id),
-    [favorites]
+    [favorites, product]
   );
 
   const onFavClick = () => {

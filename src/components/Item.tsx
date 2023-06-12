@@ -2,6 +2,7 @@ import { type Maybe } from "@trpc/server";
 import type { FakeProduct } from "~/types";
 import Image from "next/image";
 import { Button } from "@material-tailwind/react";
+import { BiHeart, BiShareAlt } from "react-icons/bi";
 
 interface ProductListProps {
   products: Maybe<FakeProduct[]>;
@@ -58,6 +59,9 @@ const Item: React.FC<ProductListProps> = ({ products }) => {
               />
             </div>
             <div className="relative h-full w-[22.5%] ">
+              <div className="absolute z-10 flex h-full w-full items-center justify-center bg-white/70 backdrop-blur-[2px]">
+                <span className="text-2xl	font-bold">View All</span>
+              </div>
               <Image
                 className="h-full w-full object-cover object-center"
                 src={image}
@@ -70,9 +74,23 @@ const Item: React.FC<ProductListProps> = ({ products }) => {
         </div>
 
         <div className="flex aspect-[1/1] w-[45%] flex-col">
-          <div className=" flex w-[45%]">
-            <span className="mr-5 pb-[16px] font-medium">{condition}</span>
-            <span className="pb-[16px] font-medium">{sellerCategory}</span>
+          <div className="flex w-full justify-between">
+            <div className="flex w-[50%] items-center">
+              <span className="mr-5 pb-0 pb-[16px] font-medium">
+                {condition}
+              </span>
+              <span className="pb-0 pb-[16px] font-medium">
+                {sellerCategory}
+              </span>
+            </div>
+            <div className="flex w-[50%]">
+              <Button className="h-full rounded-md bg-blue-brand">
+                <BiHeart size={18} />
+              </Button>
+              <Button className=" ml-[10px] rounded-md bg-blue-brand">
+                <BiShareAlt size={18} />
+              </Button>
+            </div>
           </div>
           <span className="pb-[16px] text-3xl font-medium">{title}</span>
           <span className="pb-2 text-xl font-medium">Price: ${price}</span>
