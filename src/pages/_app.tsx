@@ -5,6 +5,7 @@ import "~/styles/globals.css";
 import { Footer, Header, Favorites } from "~/components";
 import { SessionProvider } from "next-auth/react";
 import { type Session } from "next-auth";
+import Head from "next/head";
 import AppContext from "../context/AppContext";
 
 const poppins = Poppins({
@@ -35,6 +36,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <main
           className={`${poppins.variable} ${comfortaa.variable} ${inter.variable} min-h-screen bg-[#EBEBEB]`}
         >
+          <Head>
+            <title>tOUHU</title>
+          </Head>
           <Header />
           <Component {...pageProps} />
           <Favorites />
