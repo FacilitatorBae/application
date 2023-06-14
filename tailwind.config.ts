@@ -1,6 +1,7 @@
 import { type Config } from "tailwindcss";
+const withMT = require("@material-tailwind/react/utils/withMT");
 
-export default {
+export default withMT({
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
@@ -16,4 +17,4 @@ export default {
     },
   },
   plugins: [require("@tailwindcss/aspect-ratio")],
-} satisfies Config;
+}) satisfies Config;
