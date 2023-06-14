@@ -6,10 +6,10 @@ import { signIn, signOut, useSession } from "next-auth/react";
 const fakeProducts: FakeProduct[] = [
   {
     id: "aaabbbccc1",
-    title: "Bike",
+    title: "Mountain Bike Scot 26' Wheels - Excellent for young people",
     image: "https://source.unsplash.com/random/?motorcycle",
     isHot: true,
-    isNew: true,
+    isNew: false,
     isBusiness: true,
     price: 4999,
     fee: 499,

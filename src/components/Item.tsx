@@ -59,8 +59,8 @@ const Item: React.FC<ProductListProps> = ({ products }) => {
               />
             </div>
             <div className="relative h-full w-[22.5%] ">
-              <div className="absolute z-10 flex h-full w-full items-center justify-center bg-white/70 backdrop-blur-[2px]">
-                <span className="text-2xl	font-bold">View All</span>
+              <div className="absolute z-10 flex h-full w-full cursor-pointer items-center justify-center bg-white/70 backdrop-blur-[2px]">
+                <span className="	text-2xl font-bold">View All</span>
               </div>
               <Image
                 className="h-full w-full object-cover object-center"
@@ -74,16 +74,12 @@ const Item: React.FC<ProductListProps> = ({ products }) => {
         </div>
 
         <div className="flex aspect-[1/1] w-[45%] flex-col">
-          <div className="flex w-full justify-between">
+          <div className="flex w-full justify-between pb-5">
             <div className="flex w-[50%] items-center">
-              <span className="mr-5 pb-0 pb-[16px] font-medium">
-                {condition}
-              </span>
-              <span className="pb-0 pb-[16px] font-medium">
-                {sellerCategory}
-              </span>
+              <span className="mr-5 pb-0 font-medium">{condition}</span>
+              <span className="pb-0 font-medium">{sellerCategory}</span>
             </div>
-            <div className="flex w-[50%]">
+            <div className="flex w-[50%] justify-end">
               <Button className="h-full rounded-md bg-blue-brand">
                 <BiHeart size={18} />
               </Button>
@@ -93,8 +89,8 @@ const Item: React.FC<ProductListProps> = ({ products }) => {
             </div>
           </div>
           <span className="pb-[16px] text-3xl font-medium">{title}</span>
-          <span className="pb-2 text-xl font-medium">Price: ${price}</span>
-          <span className="text-xl font-medium text-green-800">
+          <span className="pb-2 text-2xl font-medium">Price: ${price}</span>
+          <span className="text-2xl font-medium text-green-800">
             Fee: ${fee}
           </span>
           <div className="pt-5">

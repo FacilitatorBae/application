@@ -44,12 +44,14 @@ const FavItem: React.FC<FavItemProps> = ({
         />
       </div>
       <div className="ml-8 flex h-full w-full max-w-[45%] flex-col justify-center">
-        <span className="pb-[16px] font-medium">{title}</span>
+        <span className="block overflow-hidden text-ellipsis whitespace-nowrap pb-[16px] font-medium ">
+          {title}
+        </span>
         <span>Price: ${price}</span>
         <span className="text-green-800">Fee: ${fee}</span>
       </div>
       <Button
-        className="flex-start mt-0 flex h-6 flex-col p-0 text-xl"
+        className="flex-start ml-2 mt-0 flex h-6 flex-col p-0 text-xl"
         variant="text"
         onClick={onRemoveClick}
       >

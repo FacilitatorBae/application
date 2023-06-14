@@ -1,8 +1,7 @@
 import { Badge } from "~/components";
-import { FcGlobe } from "react-icons/fc";
 import { type FakeProduct } from "~/types";
 import { BiHeart } from "react-icons/bi";
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Context } from "./../context/AppContext";
 
 interface ProductListItemProps {
@@ -11,6 +10,7 @@ interface ProductListItemProps {
 
 const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
   const { favorites, setFavorites } = useContext(Context);
+  const [isHovered, setIsHovered] = useState(false);
 
   const isItemFaved = useMemo(
     () => favorites.items.find((item) => item.id === product.id),
@@ -27,7 +27,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
           items: newFavArray,
         }));
       } else {
-        let newFavArrayRemove: any = [];
+        const newFavArrayRemove: any = [];
         newFavArray.forEach((item) => {
           if (item.id !== product.id) {
             newFavArrayRemove.push(item);
@@ -39,15 +39,25 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
   };
 
   return (
-    <div className="group relative mb-8 w-full cursor-pointer shadow-md transition duration-300 hover:shadow-xl">
-      <div className="aspect-h-1 aspect-w-1 overflow-hidden md:aspect-h-16 md:aspect-w-15">
+    <div
+      onMouseOver={() => {
+        setIsHovered(true);
+      }}
+      onMouseOut={() => {
+        setIsHovered(false);
+      }}
+      className="group relative mb-8 w-full cursor-pointer shadow-md transition duration-300 hover:shadow-xl"
+    >
+      <div className="aspect-h-1 aspect-w-1  overflow-hidden rounded-lg md:aspect-h-16 md:aspect-w-15">
         <picture className="relative">
-          <button
-            onClick={onFavClick}
-            className="absolute right-0 mr-5 mt-5 text-xl opacity-0 group-hover:opacity-[100%]"
-          >
-            <BiHeart color={`${isItemFaved ? "pink" : "black"}`} />
-          </button>
+          {isHovered && (
+            <button
+              onClick={onFavClick}
+              className="absolute right-0 mr-5 mt-5 text-xl"
+            >
+              <BiHeart color={`${isItemFaved ? "pink" : "black"}`} />
+            </button>
+          )}
           <img
             src={product.image}
             alt={product.title}
@@ -56,9 +66,8 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
           />
         </picture>
       </div>
-      <div className="min-h-24 absolute bottom-0 left-1/2 w-full -translate-x-1/2 space-y-4 bg-white/40 p-4 backdrop-blur-md transition duration-300 group-hover:bg-white/50">
+      <div className="min-h-24 absolute bottom-[-25px] left-1/2 w-[90%] -translate-x-1/2 space-y-4 rounded-lg bg-white/40 p-4 backdrop-blur-md transition duration-300 group-hover:bg-white/50">
         <div className="flex items-start justify-between">
-          <span className="text-xl font-bold leading-4">{product.title}</span>
           <div className="flex justify-center gap-2">
             <Badge size="small" variant="success">
               {product.isBusiness ? "Business" : "Individual"}
@@ -66,12 +75,18 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
             <Badge size="small"> {product.isNew ? "New" : "Used"}</Badge>
           </div>
         </div>
-        <div className="grid grid-cols-2">
-          <div className="flex items-center gap-1">
-            <FcGlobe />
-            <span>Buenos Aires, San Isidro</span>
-          </div>
+
+        <div className="flex flex-col">
+          <span className="text-xl font-semibold">Price: ${product.price}</span>
+          <span className="text-xl font-semibold text-green-800 ">
+            Fee: ${product.fee}
+          </span>
         </div>
+        {isHovered && (
+          <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-xs">
+            {product.title}
+          </span>
+        )}
       </div>
     </div>
   );

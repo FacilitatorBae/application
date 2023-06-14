@@ -44,8 +44,11 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex justify-center bg-blue-brand p-2 font-inter text-xs text-white">
-        Get the offer of 50% on your first 3 orders
+      <div className="bg-blue-brand p-2 font-inter text-xs text-white">
+        <div className="container mx-auto flex justify-end">
+          <span>Become a Partner</span>
+          <span className="pl-4">Sell your Products</span>
+        </div>
       </div>
       <header className="bg-white px-4 shadow-lg">
         <div className="container mx-auto flex items-center justify-between py-4">
