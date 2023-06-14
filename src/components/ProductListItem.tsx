@@ -83,7 +83,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
           </span>
         </div>
         {isHovered && (
-          <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-xs">
+          <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
             {product.title}
           </span>
         )}

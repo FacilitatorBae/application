@@ -7,3 +7,4 @@ export { default as Item } from "./Item";
 export { default as ProductList } from "./ProductList";
 export { default as ProductListItem } from "./ProductListItem";
 export { default as CategoryCard } from "./CategoryCard/CategoryCard";
+export { default as CategoryList } from "./CategoryList";
