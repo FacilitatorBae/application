@@ -1,9 +1,23 @@
 const mockCategory = [
-  { type: "option", title: "Condition", children: ["Brand New", "Used"] },
+  {
+    type: "option",
+    title: "Condition",
+    children: [
+      { title: "Brand New", count: 3123 },
+      { title: "Used", count: 421 },
+    ],
+  },
   {
     type: "option",
     title: "Category",
-    children: ["eSport", "Gaming", "Toys", "Kitchen", "Home", "Cars"],
+    children: [
+      { title: "eSport", count: 125 },
+      { title: "Gaming", count: 125 },
+      { title: "Toys", count: 125 },
+      { title: "Kitchen", count: 125 },
+      { title: "Home", count: 125 },
+      { title: "Cars", count: 125 },
+    ],
   },
 ];
 
@@ -14,7 +28,10 @@ const CategoryList = () => {
         <div className="flex flex-col">
           <span className="font-bold">{categ.title}</span>
           {categ.children.map((child) => (
-            <span>{child}</span>
+            <div className="flex flex-row">
+              <span>{child.title}</span>
+              <span className="ml-1">({child.count})</span>
+            </div>
           ))}
         </div>
       ))}
