@@ -3,7 +3,7 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
-  Button,
+  Input,
 } from "@material-tailwind/react";
 import { IoSearch } from "react-icons/io5";
 import { BiHeart } from "react-icons/bi";
@@ -60,11 +60,7 @@ const Header = () => {
           <div className="flex-1 px-7">
             <form className="mx-auto flex max-w-lg items-center">
               <div className="relative w-full">
-                <input
-                  type="text"
-                  className="block w-full border border-gray-300 bg-gray-50 p-2 pr-10 text-sm focus:border-blue-brand focus:outline-none focus:ring-blue-brand "
-                  placeholder="Search"
-                />
+                <Input type="text" label="Search" />
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"

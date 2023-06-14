@@ -1,4 +1,4 @@
-import { Checkbox, Input } from "@material-tailwind/react";
+import { Checkbox, Input, Button } from "@material-tailwind/react";
 
 const mockCategory = [
   {
@@ -40,7 +40,7 @@ const CategoryList = () => {
     <div className="flex h-full w-[25%] flex-col font-poppins">
       <div className="flex flex-col">
         {mockCategory.map((categ) => (
-          <div className="flex flex-col">
+          <div className="flex flex-col pb-3">
             <span className="text-lg font-medium">{categ.title}</span>
             {categ.children?.map((child) => (
               <div className="flex flex-row items-baseline font-light">
@@ -53,26 +53,48 @@ const CategoryList = () => {
           </div>
         ))}
 
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col pb-3">
           <span className="text-lg font-medium">Price</span>
-          <div className="flex w-[40%] flex-row justify-between">
-            <Input label="From" />
-            <Input label="To" />
-            <span>GO</span>
+          <div className="flex w-[65%] flex-row items-center justify-between">
+            <Input
+              containerProps={{ className: "min-w-[72px] w-[15px]" }}
+              label="From"
+            />
+            <Input
+              containerProps={{ className: "min-w-[72px] w-[45px]" }}
+              label="To"
+            />
+            <Button className="ml-2 h-[30px] w-[30px] p-0">GO</Button>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col pb-3">
           <span className="text-lg font-medium">Fees</span>
-        </div>
-        <div className="flex w-full flex-col">
-          <span className="text-lg font-medium">Others</span>
-          <div className="flex w-[40%] flex-row justify-between">
-            <span className="font-light">Free shipping</span>
-            <Checkbox />
+          <div className="flex w-[65%] flex-row items-center justify-between">
+            <Input
+              containerProps={{ className: "min-w-[72px] w-[15px]" }}
+              label="From"
+            />
+            <Input
+              containerProps={{ className: "min-w-[72px] w-[45px]" }}
+              label="To"
+            />
+            <Button className="ml-2 h-[30px] w-[30px] p-0">GO</Button>
           </div>
-          <div className="flex w-[40%] flex-row justify-between">
+        </div>
+        <div className="flex w-full flex-col pb-3">
+          <span className="text-lg font-medium">Others</span>
+          <div className="flex w-[60%] flex-row items-center justify-between">
+            <span className="font-light">Free shipping</span>
+            <Checkbox
+              ripple={false}
+              containerProps={{
+                className: "p-0",
+              }}
+            />
+          </div>
+          <div className="flex w-[60%] flex-row items-center justify-between">
             <span className="font-light">Certified Sellers</span>
-            <Checkbox />
+            <Checkbox ripple={false} containerProps={{ className: "p-0" }} />
           </div>
         </div>
       </div>
