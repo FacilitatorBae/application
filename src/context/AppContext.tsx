@@ -1,33 +1,62 @@
-import { createContext, useState } from "react";
+import React, { type PropsWithChildren, createContext, useState } from "react";
+// TODO: Use Product type generated from prisma types
+import { type FakeProduct } from "~/types";
 
-export const Context = createContext({} as ContextState);
 interface ContextState {
   favorites: {
     isOpen: boolean;
-    items: Array<{
-      id: string;
-      title: string;
-      image: string;
-      price: number;
-      fee: number;
-      isHot: boolean;
-      isBusiness: boolean;
-      isNew: boolean;
-    }>;
+    items: FakeProduct[];
+    togglePanel: () => void;
+    add: (product: FakeProduct) => void;
+    remove: (product: FakeProduct) => void;
   };
   setFavorites: any;
 }
 
-const initialValueFavs = {
-  isOpen: false,
-  items: [],
+const initialContext: ContextState = {
+  favorites: {
+    isOpen: false,
+    items: [],
+    togglePanel: () => ({}),
+    add: () => ({}),
+    remove: () => ({}),
+  },
+  setFavorites: () => ({}),
 };
 
-const AppContext = ({ children }: any) => {
-  const [favorites, setFavorites] = useState<any>(initialValueFavs);
+export const Context = createContext<ContextState>(initialContext);
+
+const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
+  const [favoritesIsOpen, setFavoritesIsOpen] = useState(false);
+  const [favoritesItems, setFavoritesItems] = useState<FakeProduct[]>([]);
+  console.log({ favoritesItems });
+  const addFavorite = (product: FakeProduct) => {
+    const isAlreadyFaved = favoritesItems.find(
+      (item) => item.id === product.id
+    );
+
+    if (isAlreadyFaved) return;
+
+    setFavoritesItems((prev) => [...prev, product]);
+  };
+
+  const removeFavorite = (product: FakeProduct) => {
+    setFavoritesItems((prev) => prev.filter((fav) => fav.id !== product.id));
+  };
 
   return (
-    <Context.Provider value={{ favorites, setFavorites }}>
+    <Context.Provider
+      value={{
+        favorites: {
+          isOpen: favoritesIsOpen,
+          items: favoritesItems,
+          togglePanel: () => setFavoritesIsOpen((prev) => !prev),
+          add: addFavorite,
+          remove: removeFavorite,
+        },
+        setFavorites: setFavoritesItems,
+      }}
+    >
       {children}
     </Context.Provider>
   );

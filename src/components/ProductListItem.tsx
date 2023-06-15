@@ -1,63 +1,48 @@
 import { Badge } from "~/components";
 import { type FakeProduct } from "~/types";
-import { BiHeart } from "react-icons/bi";
-import { useContext, useMemo, useState } from "react";
-import { Context } from "./../context/AppContext";
+import { IoHeart, IoHeartOutline } from "react-icons/io5";
+import { useMemo } from "react";
+import { useFavorites } from "~/hooks/useFavorites";
 
 interface ProductListItemProps {
   product: FakeProduct;
 }
 
 const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
-  const { favorites, setFavorites } = useContext(Context);
-  const [isHovered, setIsHovered] = useState(false);
+  const {
+    items: favorites,
+    add: addFavorite,
+    remove: removeFavorite,
+  } = useFavorites();
 
   const isItemFaved = useMemo(
-    () => favorites.items.find((item) => item.id === product.id),
+    () => favorites.find((item) => item.id === product.id),
     [favorites, product]
   );
 
-  const onFavClick = () => {
-    const newFavArray = favorites.items;
-    if (Array.isArray(newFavArray)) {
-      if (!isItemFaved) {
-        newFavArray.push(product);
-        setFavorites((prev: any) => ({
-          ...prev,
-          items: newFavArray,
-        }));
-      } else {
-        const newFavArrayRemove: any = [];
-        newFavArray.forEach((item) => {
-          if (item.id !== product.id) {
-            newFavArrayRemove.push(item);
-          }
-        });
-        setFavorites((prev: any) => ({ ...prev, items: newFavArrayRemove }));
-      }
+  const onFavClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    if (!isItemFaved) {
+      addFavorite(product);
+    } else {
+      removeFavorite(product);
     }
   };
 
   return (
-    <div
-      onMouseOver={() => {
-        setIsHovered(true);
-      }}
-      onMouseOut={() => {
-        setIsHovered(false);
-      }}
-      className="group relative mb-8 w-full cursor-pointer shadow-md transition duration-300 hover:shadow-xl"
-    >
+    <div className="group relative mb-8 w-full cursor-pointer shadow-md transition duration-300 hover:shadow-xl">
       <div className="aspect-h-1 aspect-w-1  overflow-hidden rounded-lg md:aspect-h-16 md:aspect-w-15">
         <picture className="relative">
-          {isHovered && (
-            <button
-              onClick={onFavClick}
-              className="absolute right-0 mr-5 mt-5 text-xl"
-            >
-              <BiHeart color={`${isItemFaved ? "pink" : "black"}`} />
-            </button>
-          )}
+          <button
+            onClick={onFavClick}
+            className="absolute right-0 mr-5 mt-5 hidden text-xl group-hover:block"
+          >
+            {isItemFaved ? (
+              <IoHeart color="red" />
+            ) : (
+              <IoHeartOutline color="black" />
+            )}
+          </button>
           <img
             src={product.image}
             alt={product.title}
@@ -82,11 +67,9 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
             Fee: ${product.fee}
           </span>
         </div>
-        {isHovered && (
-          <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
-            {product.title}
-          </span>
-        )}
+        <span className=" hidden overflow-hidden text-ellipsis whitespace-nowrap text-sm group-hover:block">
+          {product.title}
+        </span>
       </div>
     </div>
   );
