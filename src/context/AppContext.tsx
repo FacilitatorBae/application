@@ -10,7 +10,6 @@ interface ContextState {
     add: (product: FakeProduct) => void;
     remove: (product: FakeProduct) => void;
   };
-  setFavorites: any;
 }
 
 const initialContext: ContextState = {
@@ -21,7 +20,6 @@ const initialContext: ContextState = {
     add: () => ({}),
     remove: () => ({}),
   },
-  setFavorites: () => ({}),
 };
 
 export const Context = createContext<ContextState>(initialContext);
@@ -54,7 +52,6 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
           add: addFavorite,
           remove: removeFavorite,
         },
-        setFavorites: setFavoritesItems,
       }}
     >
       {children}

@@ -21,7 +21,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
   );
 
   const onFavClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
+    event.preventDefault();
     if (!isItemFaved) {
       addFavorite(product);
     } else {
