@@ -29,7 +29,7 @@ export const Context = createContext<ContextState>(initialContext);
 const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
   const [favoritesIsOpen, setFavoritesIsOpen] = useState(false);
   const [favoritesItems, setFavoritesItems] = useState<FakeProduct[]>([]);
-  console.log({ favoritesItems });
+
   const addFavorite = (product: FakeProduct) => {
     const isAlreadyFaved = favoritesItems.find(
       (item) => item.id === product.id
