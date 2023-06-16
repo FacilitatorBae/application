@@ -2,7 +2,8 @@ import { type Maybe } from "@trpc/server";
 import type { FakeProduct } from "~/types";
 import Image from "next/image";
 import { Button } from "@material-tailwind/react";
-import { BiHeart, BiShareAlt } from "react-icons/bi";
+import { BiShareAlt } from "react-icons/bi";
+import { IoHeart } from "react-icons/io5";
 
 interface ProductListProps {
   products: Maybe<FakeProduct[]>;
@@ -81,7 +82,7 @@ const Item: React.FC<ProductListProps> = ({ products }) => {
             </div>
             <div className="flex w-[50%] justify-end">
               <Button className="h-full rounded-md bg-blue-brand">
-                <BiHeart size={18} />
+                <IoHeart size={18} />
               </Button>
               <Button className=" ml-[10px] rounded-md bg-blue-brand">
                 <BiShareAlt size={18} />

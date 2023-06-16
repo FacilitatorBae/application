@@ -1,29 +1,23 @@
+import Link from "next/link";
 import {
   Menu,
   MenuHandler,
   MenuList,
   MenuItem,
   Input,
+  Badge,
 } from "@material-tailwind/react";
-import { IoSearch } from "react-icons/io5";
-import { BiHeart } from "react-icons/bi";
-import { useContext } from "react";
-import { Context } from "./../context/AppContext";
+import { IoHeartOutline, IoSearch } from "react-icons/io5";
 import { MdOutlineExpandMore } from "react-icons/md";
-import { menuItemsLabel, menuItemsFields } from "./models";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { menuItemsLabel, menuItemsFields } from "./models";
+import { useFavorites } from "~/hooks/useFavorites";
 
 const { MY_PROFILE, MY_ORDERS, LOGOUT, LOGIN } = menuItemsFields;
 
 const Header = () => {
-  const { data: sessionData, status } = useSession();
-  const { setFavorites } = useContext(Context);
-
-  const onFavsClick = () => {
-    setFavorites((prev: any) => ({ ...prev, isOpen: true }));
-  };
-
-  console.log({ sessionData });
+  const { status } = useSession();
+  const { items, togglePanel } = useFavorites();
 
   const onMenuItemClick = (item: string) => {
     switch (item) {
@@ -32,10 +26,10 @@ const Header = () => {
       case MY_ORDERS:
         break;
       case LOGOUT:
-        signOut();
+        void signOut();
         break;
       case LOGIN:
-        signIn();
+        void signIn();
         break;
       default:
         break;
@@ -53,9 +47,9 @@ const Header = () => {
       <header className="bg-white px-4 shadow-lg">
         <div className="container mx-auto flex items-center justify-between py-4">
           <div className="flex w-1/4 justify-start">
-            <a href="../">
+            <Link href="/">
               <span className="font-comfortaa text-2xl">tOUHU</span>
-            </a>
+            </Link>
           </div>
           <div className="flex-1 px-7">
             <form className="mx-auto flex max-w-lg items-center">
@@ -72,10 +66,13 @@ const Header = () => {
           </div>
           <div className="flex w-1/4 items-center justify-end space-x-8">
             <button
-              onClick={onFavsClick}
+              onClick={togglePanel}
               className="group/cart aspect-square relative flex w-[38px] items-center justify-center text-2xl hover:bg-blue-brand hover:text-white"
             >
-              <BiHeart />
+              {/* TODO: Check why we are getting errors on console regarding prop type `placement` */}
+              <Badge invisible={!items.length} content={items.length}>
+                <IoHeartOutline />
+              </Badge>
               <div className="aspect-square absolute bottom-2 right-2 w-2.5 rounded-full bg-blue-brand group-hover/cart:bg-white" />
             </button>
             <Menu placement="bottom-end">
