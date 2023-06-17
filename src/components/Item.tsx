@@ -3,20 +3,41 @@ import type { FakeProduct } from "~/types";
 import Image from "next/image";
 import { Button } from "@material-tailwind/react";
 import { BiShareAlt } from "react-icons/bi";
-import { IoHeart } from "react-icons/io5";
+import { IoHeart, IoHeartOutline } from "react-icons/io5";
+import { useFavorites } from "~/hooks/useFavorites";
+import { useMemo } from "react";
 
 interface ProductListProps {
   products: Maybe<FakeProduct[]>;
 }
 
-const Item: React.FC<ProductListProps> = ({ products }) => {
-  const { id, title, image, price, fee, isHot, isBusiness, isNew } = products;
+const Item: React.FC<ProductListProps> = ({ product }) => {
+  const {
+    items: favorites,
+    add: addFavorite,
+    remove: removeFavorite,
+  } = useFavorites();
+
+  const { id, title, image, price, fee, isHot, isBusiness, isNew } = product;
+
+  const isItemFaved = useMemo(
+    () => favorites.find((item) => item.id === id),
+    [favorites, id]
+  );
+
+  const onFavClick = () => {
+    if (!isItemFaved) {
+      addFavorite(product);
+    } else {
+      removeFavorite(product);
+    }
+  };
 
   const condition = isNew ? "Brand New" : "Used";
   const sellerCategory = isBusiness ? "Business" : "Individual";
 
   return (
-    <section className="container mx-auto my-16 px-4 sm:px-0">
+    <section className="container mx-auto my-16 px-4 font-poppins sm:px-0">
       <div className="mb-6 h-[20px] w-full">
         Category {`>`} Category {`>`} Category
       </div>
@@ -61,7 +82,7 @@ const Item: React.FC<ProductListProps> = ({ products }) => {
             </div>
             <div className="relative h-full w-[22.5%] ">
               <div className="absolute z-10 flex h-full w-full cursor-pointer items-center justify-center bg-white/70 backdrop-blur-[2px]">
-                <span className="	text-2xl font-bold">View All</span>
+                <span className="	text-xl font-bold">View All</span>
               </div>
               <Image
                 className="h-full w-full object-cover object-center"
@@ -81,15 +102,19 @@ const Item: React.FC<ProductListProps> = ({ products }) => {
               <span className="pb-0 font-medium">{sellerCategory}</span>
             </div>
             <div className="flex w-[50%] justify-end">
-              <Button className="h-full rounded-md bg-blue-brand">
-                <IoHeart size={18} />
-              </Button>
+              <button className="mr-5 text-3xl">
+                {isItemFaved ? (
+                  <IoHeart onClick={onFavClick} color="red" />
+                ) : (
+                  <IoHeartOutline onClick={onFavClick} color="black" />
+                )}
+              </button>
               <Button className=" ml-[10px] rounded-md bg-blue-brand">
                 <BiShareAlt size={18} />
               </Button>
             </div>
           </div>
-          <span className="pb-[16px] text-3xl font-medium">{title}</span>
+          <span className="pb-[16px] text-3xl font-thin">{title}</span>
           <span className="pb-2 text-2xl font-medium">Price: ${price}</span>
           <span className="text-2xl font-medium text-green-800">
             Fee: ${fee}

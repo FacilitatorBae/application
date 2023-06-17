@@ -2,7 +2,7 @@ import { fakeProducts } from "../index";
 import Item from "../../components/Item";
 
 export default function Post({ postData }) {
-  return <Item products={postData} />;
+  return <Item product={postData} />;
 }
 
 const paths = [

@@ -31,8 +31,8 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
   };
 
   return (
-    <div className="group relative mb-8 w-full cursor-pointer shadow-md transition duration-300 hover:shadow-xl">
-      <div className="aspect-h-1 aspect-w-1  overflow-hidden rounded-lg md:aspect-h-16 md:aspect-w-15">
+    <div className="group relative mb-8 w-full cursor-pointer font-poppins shadow-md transition duration-300 hover:shadow-xl">
+      <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg md:aspect-h-16 md:aspect-w-15">
         <picture className="relative">
           <button
             onClick={onFavClick}
@@ -63,13 +63,13 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
         </div>
 
         <div className="flex flex-col">
-          <span className="text-xl font-semibold">Price: ${product.price}</span>
-          <span className="text-xl font-semibold text-green-800 ">
+          <span className="text-xl font-medium">Price: ${product.price}</span>
+          <span className="text-xl font-medium text-green-800 ">
             Fee: ${product.fee}
           </span>
         </div>
 
-        <span className=" hidden overflow-hidden text-ellipsis whitespace-nowrap text-sm group-hover:block">
+        <span className="hidden overflow-hidden text-ellipsis whitespace-nowrap text-sm font-thin group-hover:block">
           <Tooltip placement="bottom" content={product.title}>
             {product.title}
           </Tooltip>

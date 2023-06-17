@@ -16,7 +16,7 @@ const Favorites = () => {
     >
       <div className="flex-start flex flex-col pl-6">
         <Button
-          className="flex-start mt-[10px] flex flex-col pl-0 text-3xl"
+          className="flex-start mt-5 flex max-w-max flex-col p-0 text-3xl"
           variant="text"
           onClick={togglePanel}
         >

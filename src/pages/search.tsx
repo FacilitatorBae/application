@@ -79,16 +79,21 @@ const Search = () => {
     <section className="container mx-auto mt-16 flex px-4 sm:px-0">
       <CategoryList />
       <div className="w-full">
-        <div className="mb-4 w-[20px]">
-          <Select label="Sort By">
-            <Option>Price (low to high)</Option>
-            <Option>Price (high to low)</Option>
-            <Option>Fees (low to high)</Option>
-            <Option>Fees (high to low)</Option>
-            <Option>Relevance</Option>
-          </Select>
+        <div className="flex justify-end">
+          <div className="mb-4 max-w-max">
+            <Select label="Sort By">
+              <Option>Price (low to high)</Option>
+              <Option>Price (high to low)</Option>
+              <Option>Fees (low to high)</Option>
+              <Option>Fees (high to low)</Option>
+              <Option>Relevance</Option>
+            </Select>
+          </div>
         </div>
-        <ProductList products={fakeProducts} />
+        <ProductList
+          products={fakeProducts}
+          classes="md:grid-cols-[repeat(auto-fit,minmax(250px,_1fr))]"
+        />
       </div>
     </section>
   );

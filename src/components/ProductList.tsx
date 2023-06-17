@@ -5,11 +5,12 @@ import type { FakeProduct } from "~/types";
 
 interface ProductListProps {
   products: Maybe<FakeProduct[]>;
+  classes: string;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
+const ProductList: React.FC<ProductListProps> = ({ products, classes }) => {
   return (
-    <div className="grid grid-cols-1 justify-center gap-4 md:grid-cols-[repeat(auto-fit,minmax(300px,_1fr))]">
+    <div className={`grid grid-cols-1 justify-center gap-4 ${classes}`}>
       {products && products.length > 0
         ? products.map((product) => {
             const url = `/items/${product?.id}`;

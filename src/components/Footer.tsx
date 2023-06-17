@@ -81,7 +81,7 @@ const Footer = () => {
 
   return (
     <>
-      <div className="flex h-[350px] flex-col bg-gray-900">
+      <div className="mt-16 flex h-[350px] flex-col bg-gray-900">
         <div className="flex h-[300px] w-full flex-row">
           <div className="flex h-full w-1/2 flex-row justify-around">
             {footerItems}

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button } from "@material-tailwind/react";
+import { Button, Tooltip } from "@material-tailwind/react";
 import { BiTrash } from "react-icons/bi";
 import { useFavorites } from "~/hooks/useFavorites";
 import { type FakeProduct } from "~/types";
@@ -27,8 +27,11 @@ const FavItem: React.FC<FavItemProps> = ({ item }) => {
       </div>
       <div className="ml-8 flex h-full w-full max-w-[45%] flex-col justify-center">
         <span className="block overflow-hidden text-ellipsis whitespace-nowrap pb-[16px] font-medium ">
-          {item.title}
+          <Tooltip className="z-[99999]" content={item.title}>
+            {item.title}
+          </Tooltip>
         </span>
+
         <span>Price: ${item.price}</span>
         <span className="text-green-800">Fee: ${item.fee}</span>
       </div>
