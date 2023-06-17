@@ -38,7 +38,8 @@ const mockCategory = [
 const CategoryList = () => {
   return (
     <div className="flex h-full w-[25%] flex-col font-poppins">
-      <div className="flex flex-col">
+      <div className="flex w-full flex-col">
+        <div className="mb-5 w-full text-2xl">Bike with 26 inch wheels</div>
         {mockCategory.map((categ) => (
           <div className="flex flex-col pb-3">
             <span className="text-lg font-medium">{categ.title}</span>
