@@ -3,6 +3,7 @@ import { type FakeProduct } from "~/types";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useMemo } from "react";
 import { useFavorites } from "~/hooks/useFavorites";
+import { Tooltip } from "@material-tailwind/react";
 
 interface ProductListItemProps {
   product: FakeProduct;
@@ -67,8 +68,11 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
             Fee: ${product.fee}
           </span>
         </div>
+
         <span className=" hidden overflow-hidden text-ellipsis whitespace-nowrap text-sm group-hover:block">
-          {product.title}
+          <Tooltip placement="bottom" content={product.title}>
+            {product.title}
+          </Tooltip>
         </span>
       </div>
     </div>
