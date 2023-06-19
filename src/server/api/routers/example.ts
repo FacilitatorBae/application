@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { mockCategories } from "../functions/functions";
+import { mockCategories } from "../mocks/mocks";
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure

@@ -57,13 +57,16 @@ model User {
 }
 
 model Product {
-    id       Int      @id @default(autoincrement())
-    label    String
-    url      String
-    price    Int
-    fee      Int
-    owner    String   @default("Germán Beder")
-    category Category @default(General)
+    id         Int      @id @default(autoincrement())
+    title      String
+    isNew      Boolean  @default(false)
+    isBusiness Boolean  @default(false)
+    isHot      Boolean  @default(false)
+    url        String
+    price      Int
+    fee        Int
+    owner      String   @default("Germán Beder")
+    category   Category @default(General)
 }
 
 enum Category {

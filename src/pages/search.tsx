@@ -1,80 +1,18 @@
 import { CategoryList, ProductList } from "~/components";
 import { Select, Option } from "@material-tailwind/react";
-
-const fakeProducts: FakeProduct[] = [
-  {
-    id: "aaabbbccc1",
-    title: "Mountain Bike Scot 26' Wheels - Excellent for young people",
-    image: "https://source.unsplash.com/random/?motorcycle",
-    isHot: true,
-    isNew: false,
-    isBusiness: true,
-    price: 4999,
-    fee: 499,
-  },
-  {
-    id: "aaabbbccc2",
-    title: "Hammers set",
-    image: "https://source.unsplash.com/random/?hammers",
-    isHot: true,
-    isNew: true,
-    isBusiness: true,
-    price: 14999,
-    fee: 799,
-  },
-  {
-    id: "aaabbbccc3",
-    title: "iPhone 11",
-    image: "https://source.unsplash.com/random/?iphone11",
-    isHot: false,
-    isNew: true,
-    isBusiness: true,
-    price: 74999,
-    fee: 1499,
-  },
-  {
-    id: "aaabbbccc5",
-    title: "Headphones",
-    image: "https://source.unsplash.com/random/?headphones",
-    isHot: false,
-    isNew: true,
-    isBusiness: true,
-    price: 8999,
-    fee: 99,
-  },
-  {
-    id: "aaabbbccc6",
-    title: "iPad",
-    image: "https://source.unsplash.com/random/?ipad",
-    isHot: true,
-    isNew: true,
-    isBusiness: false,
-    price: 8999,
-    fee: 99,
-  },
-  {
-    id: "aaabbbccc7",
-    title: "Nike Air",
-    image: "https://source.unsplash.com/random/?nike,air",
-    isHot: false,
-    isNew: false,
-    isBusiness: true,
-    price: 8999,
-    fee: 99,
-  },
-  {
-    id: "aaabbbccc8",
-    title: "Macbook Pro M1",
-    image: "https://source.unsplash.com/random/?macbook,pro,m1",
-    isHot: false,
-    isNew: true,
-    isBusiness: false,
-    price: 8999,
-    fee: 99,
-  },
-];
+import { useSearchParams } from "next/navigation";
+import { api } from "~/utils/api";
 
 const Search = () => {
+  const searchParms = useSearchParams();
+  const searchText = searchParms.get("q");
+
+  const { data: searchProducts } = api.products.getSearchProducts.useQuery({
+    text: searchText,
+  });
+
+  console.log(searchProducts);
+
   return (
     <section className="container mx-auto mt-16 flex px-4 sm:px-0">
       <CategoryList />
@@ -91,7 +29,7 @@ const Search = () => {
           </div>
         </div>
         <ProductList
-          products={fakeProducts}
+          products={searchProducts || []}
           classes="md:grid-cols-[repeat(auto-fit,minmax(250px,_1fr))]"
         />
       </div>

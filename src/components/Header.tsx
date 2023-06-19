@@ -12,12 +12,23 @@ import { MdOutlineExpandMore } from "react-icons/md";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { menuItemsLabel, menuItemsFields } from "./models";
 import { useFavorites } from "~/hooks/useFavorites";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 const { MY_PROFILE, MY_ORDERS, LOGOUT, LOGIN } = menuItemsFields;
 
 const Header = () => {
   const { status } = useSession();
+  const router = useRouter();
+  const searchParms = useSearchParams();
+  const [searchValue, setSearchValue] = useState(
+    searchParms && searchParms.get("q")
+  );
   const { items, togglePanel } = useFavorites();
+
+  const onSearchClick = () => {
+    searchValue && router.push(`search?q=${searchValue}`);
+  };
 
   const onMenuItemClick = (item: string) => {
     switch (item) {
@@ -54,9 +65,22 @@ const Header = () => {
           <div className="flex-1 px-7">
             <form className="mx-auto flex max-w-lg items-center">
               <div className="relative w-full">
-                <Input type="text" label="Search" />
+                <Input
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      onSearchClick();
+                    }
+                  }}
+                  type="text"
+                  label="Search"
+                />
                 <button
                   type="button"
+                  onClick={onSearchClick}
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
                 >
                   <IoSearch />
