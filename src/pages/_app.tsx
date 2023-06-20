@@ -1,6 +1,6 @@
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
-import { Poppins, Comfortaa, Inter } from "@next/font/google";
+import { Poppins, Comfortaa, Inter } from "next/font/google";
 import "~/styles/globals.css";
 import { Footer, Header, Favorites } from "~/components";
 import { SessionProvider } from "next-auth/react";

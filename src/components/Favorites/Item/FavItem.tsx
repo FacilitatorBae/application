@@ -2,10 +2,10 @@ import Image from "next/image";
 import { Button, Tooltip } from "@material-tailwind/react";
 import { BiTrash } from "react-icons/bi";
 import { useFavorites } from "~/hooks/useFavorites";
-import { type FakeProduct } from "~/types";
+import { type Product } from "@prisma/client";
 
 interface FavItemProps {
-  item: FakeProduct;
+  item: Product;
 }
 
 const FavItem: React.FC<FavItemProps> = ({ item }) => {

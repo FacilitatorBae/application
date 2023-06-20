@@ -1,41 +1,47 @@
+import { useRouter } from "next/router";
+import { api } from "~/utils/api";
 import Item from "../../components/Item";
-import { prisma } from "../../server/db";
 
-export default function Post({ postData }) {
-  return <Item product={postData} />;
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import type { GetServerSidePropsContext } from "next";
+import superjson from "superjson";
+import { appRouter } from "~/server/api/root";
+import { prisma } from "~/server/db";
+
+export default function Post() {
+  const router = useRouter<"/items/[id]">();
+  const { data } = api.products.getProductById.useQuery(
+    { id: router.query.id as string },
+    { enabled: !!router.query.id, trpc: { ssr: true } }
+  );
+  if (!data) {
+    return null;
+  }
+
+  return <Item product={data} />;
 }
 
-export async function getStaticPaths() {
-  const products = await prisma.product.findMany({
-    select: {
-      id: true,
-    },
+export async function getServerSideProps(
+  context: GetServerSidePropsContext<{ id: string }>
+) {
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: { prisma },
+    transformer: superjson,
   });
+  const id = context.params?.id as string;
+  /*
+   * Prefetching the `products.getProductById` query.
+   * `prefetch` does not return the result and never throws - if you need that behavior, use `fetch` instead.
+   * @link https://trpc.io/docs/client/nextjs/server-side-helpers
+   */
+  await helpers.products.getProductById.prefetch({ id });
 
-  const paths = products.map((prod) => ({
-    params: { id: prod.id.toString() },
-  }));
-
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const getPostData = async (id) => {
-    const product = await prisma.product.findUnique({
-      where: { id: Number(id) },
-    });
-    if (product && product.id) {
-      return product;
-    }
-  };
-
-  const postData = await getPostData(params.id);
+  // Make sure to return { props: { trpcState: helpers.dehydrate() } }
   return {
     props: {
-      postData,
+      trpcState: helpers.dehydrate(),
+      id,
     },
   };
 }

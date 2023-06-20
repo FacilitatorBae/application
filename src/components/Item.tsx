@@ -1,14 +1,13 @@
-import { type Maybe } from "@trpc/server";
-import type { FakeProduct } from "~/types";
 import Image from "next/image";
 import { Button } from "@material-tailwind/react";
 import { BiShareAlt } from "react-icons/bi";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useFavorites } from "~/hooks/useFavorites";
 import { useMemo } from "react";
+import { type Product } from "@prisma/client";
 
 interface ProductListProps {
-  products: Maybe<FakeProduct[]>;
+  product: Product;
 }
 
 const Item: React.FC<ProductListProps> = ({ product }) => {
@@ -18,7 +17,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
     remove: removeFavorite,
   } = useFavorites();
 
-  const { id, title, url, price, fee, isHot, isBusiness, isNew } = product;
+  const { id, title, url, price, fee, isBusiness, isNew } = product;
 
   const isItemFaved = useMemo(
     () => favorites.find((item) => item.id === id),
