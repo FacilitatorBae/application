@@ -28,8 +28,6 @@ const Header = () => {
     searchParms && setSearchValue(searchParms.get("q"));
   }, [searchParms]);
 
-  console.log(searchValue);
-
   const onSearchClick = () => {
     searchValue && router.push(`search?q=${searchValue}`);
   };
