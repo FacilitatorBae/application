@@ -1,14 +1,13 @@
+import { type Product } from "@prisma/client";
 import React, { type PropsWithChildren, createContext, useState } from "react";
-// TODO: Use Product type generated from prisma types
-import { type FakeProduct } from "~/types";
 
 interface ContextState {
   favorites: {
     isOpen: boolean;
-    items: FakeProduct[];
+    items: Product[];
     togglePanel: () => void;
-    add: (product: FakeProduct) => void;
-    remove: (product: FakeProduct) => void;
+    add: (product: Product) => void;
+    remove: (product: Product) => void;
   };
 }
 
@@ -26,9 +25,9 @@ export const Context = createContext<ContextState>(initialContext);
 
 const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
   const [favoritesIsOpen, setFavoritesIsOpen] = useState(false);
-  const [favoritesItems, setFavoritesItems] = useState<FakeProduct[]>([]);
+  const [favoritesItems, setFavoritesItems] = useState<Product[]>([]);
 
-  const addFavorite = (product: FakeProduct) => {
+  const addFavorite = (product: Product) => {
     const isAlreadyFaved = favoritesItems.find(
       (item) => item.id === product.id
     );
@@ -38,7 +37,7 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
     setFavoritesItems((prev) => [...prev, product]);
   };
 
-  const removeFavorite = (product: FakeProduct) => {
+  const removeFavorite = (product: Product) => {
     setFavoritesItems((prev) => prev.filter((fav) => fav.id !== product.id));
   };
 

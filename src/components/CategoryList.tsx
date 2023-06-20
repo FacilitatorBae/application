@@ -41,10 +41,13 @@ const CategoryList = () => {
       <div className="flex w-full flex-col">
         <div className="mb-5 w-full text-2xl">Bike with 26 inch wheels</div>
         {mockCategory.map((categ) => (
-          <div className="flex flex-col pb-3">
+          <div key={categ.title} className="flex flex-col pb-3">
             <span className="text-lg font-medium">{categ.title}</span>
             {categ.children?.map((child) => (
-              <div className="flex flex-row items-baseline font-light">
+              <div
+                key={child.title}
+                className="flex flex-row items-baseline font-light"
+              >
                 <span>{child.title}</span>
                 <span className="ml-1 text-xs text-gray-500">
                   ({child.count})

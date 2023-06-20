@@ -1,15 +1,15 @@
 import { CategoryList, ProductList } from "~/components";
 import { Select, Option } from "@material-tailwind/react";
-import { useSearchParams } from "next/navigation";
 import { api } from "~/utils/api";
+import { useRouter } from "next/router";
 
 const Search = () => {
-  const searchParms = useSearchParams();
-  const searchText = searchParms.get("q");
+  const router = useRouter<"/search/[q]">();
 
-  const { data: searchProducts } = api.products.getSearchProducts.useQuery({
-    text: searchText,
-  });
+  const { data: searchProducts } = api.products.getSearchProducts.useQuery(
+    { text: router.query.q as string },
+    { enabled: !!router.query.q }
+  );
 
   return (
     <section className="container mx-auto mt-16 flex px-4 sm:px-0">

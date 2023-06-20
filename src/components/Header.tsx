@@ -5,31 +5,33 @@ import {
   MenuList,
   MenuItem,
   Input,
-  Badge,
 } from "@material-tailwind/react";
 import { IoHeartOutline, IoSearch } from "react-icons/io5";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { menuItemsLabel, menuItemsFields } from "./models";
 import { useFavorites } from "~/hooks/useFavorites";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const { MY_PROFILE, MY_ORDERS, LOGOUT, LOGIN } = menuItemsFields;
 
 const Header = () => {
   const { status } = useSession();
-  const router = useRouter();
-  const searchParms = useSearchParams();
-  const [searchValue, setSearchValue] = useState();
+  const router = useRouter<"/search/[q]">();
+  const searchParams = router.query.q as string;
+  const [searchValue, setSearchValue] = useState("");
   const { items, togglePanel } = useFavorites();
 
   useEffect(() => {
-    searchParms && setSearchValue(searchParms.get("q"));
-  }, [searchParms]);
+    searchParams && setSearchValue(searchParams);
+  }, [searchParams]);
 
   const onSearchClick = () => {
-    searchValue && router.push(`search?q=${searchValue}`);
+    if (searchValue) {
+      // TODO: Fix eslint to not yell @typescript-eslint/no-floating-promises
+      void router.push({ pathname: "/search/[q]", query: { q: searchValue } });
+    }
   };
 
   const onMenuItemClick = (item: string) => {
@@ -96,10 +98,14 @@ const Header = () => {
               onClick={togglePanel}
               className="group/cart aspect-square relative flex w-[38px] items-center justify-center text-2xl hover:bg-blue-brand hover:text-white"
             >
-              {/* TODO: Check why we are getting errors on console regarding prop type `placement` */}
-              <Badge invisible={!items.length} content={items.length}>
+              <div className="relative inline-flex">
                 <IoHeartOutline />
-              </Badge>
+                {Boolean(items.length) && (
+                  <span className="absolute right-[2%] top-[4%] grid min-h-[24px] min-w-[24px] -translate-y-2/4 translate-x-2/4 place-items-center rounded-full bg-red-500 px-1 py-1 text-xs font-medium leading-none text-white content-['']">
+                    {items.length}
+                  </span>
+                )}
+              </div>
               <div className="aspect-square absolute bottom-2 right-2 w-2.5 rounded-full bg-blue-brand group-hover/cart:bg-white" />
             </button>
             <Menu placement="bottom-end">

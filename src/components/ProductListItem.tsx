@@ -1,12 +1,12 @@
 import { Badge } from "~/components";
-import { type FakeProduct } from "~/types";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useMemo } from "react";
 import { useFavorites } from "~/hooks/useFavorites";
 import { Tooltip } from "@material-tailwind/react";
+import { type Product } from "@prisma/client";
 
 interface ProductListItemProps {
-  product: FakeProduct;
+  product: Product;
 }
 
 const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
