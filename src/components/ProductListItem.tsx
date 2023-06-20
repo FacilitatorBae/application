@@ -45,7 +45,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
             )}
           </button>
           <img
-            src={product.image}
+            src={product.url}
             alt={product.title}
             className="h-full w-full object-cover object-center"
             loading="lazy"

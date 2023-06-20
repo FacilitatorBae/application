@@ -11,7 +11,7 @@ export const productsRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const products = await ctx.prisma.product.findMany();
       const filteredArray = products.filter((item) =>
-        item.title.includes(input.text)
+        item.title.toLowerCase().includes(input.text.toLowerCase())
       );
       return filteredArray;
     }),

@@ -1,7 +1,7 @@
 export type FakeProduct = {
   id: string;
   title: string;
-  image: string;
+  url: string;
   price: number;
   fee: number;
   isHot: boolean;

@@ -18,7 +18,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
     remove: removeFavorite,
   } = useFavorites();
 
-  const { id, title, image, price, fee, isHot, isBusiness, isNew } = product;
+  const { id, title, url, price, fee, isHot, isBusiness, isNew } = product;
 
   const isItemFaved = useMemo(
     () => favorites.find((item) => item.id === id),
@@ -46,7 +46,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
           <div className="relative h-[80%]">
             <Image
               className="h-full w-full object-cover object-center"
-              src={image}
+              src={url}
               alt={title}
               fill
               unoptimized
@@ -56,7 +56,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
             <div className="relative h-full w-[22.5%] ">
               <Image
                 className="h-full w-full object-cover object-center"
-                src={image}
+                src={url}
                 alt={title}
                 fill
                 unoptimized
@@ -65,7 +65,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
             <div className="relative h-full w-[22.5%] ">
               <Image
                 className="h-full w-full object-cover object-center"
-                src={image}
+                src={url}
                 alt={title}
                 fill
                 unoptimized
@@ -74,7 +74,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
             <div className="relative h-full w-[22.5%] ">
               <Image
                 className="h-full w-full object-cover object-center"
-                src={image}
+                src={url}
                 alt={title}
                 fill
                 unoptimized
@@ -86,7 +86,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
               </div>
               <Image
                 className="h-full w-full object-cover object-center"
-                src={image}
+                src={url}
                 alt={title}
                 fill
                 unoptimized

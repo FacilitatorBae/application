@@ -13,7 +13,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { menuItemsLabel, menuItemsFields } from "./models";
 import { useFavorites } from "~/hooks/useFavorites";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const { MY_PROFILE, MY_ORDERS, LOGOUT, LOGIN } = menuItemsFields;
 
@@ -21,10 +21,14 @@ const Header = () => {
   const { status } = useSession();
   const router = useRouter();
   const searchParms = useSearchParams();
-  const [searchValue, setSearchValue] = useState(
-    searchParms && searchParms.get("q")
-  );
+  const [searchValue, setSearchValue] = useState();
   const { items, togglePanel } = useFavorites();
+
+  useEffect(() => {
+    searchParms && setSearchValue(searchParms.get("q"));
+  }, [searchParms]);
+
+  console.log(searchValue);
 
   const onSearchClick = () => {
     searchValue && router.push(`search?q=${searchValue}`);
@@ -75,6 +79,7 @@ const Header = () => {
                       onSearchClick();
                     }
                   }}
+                  value={searchValue}
                   type="text"
                   label="Search"
                 />

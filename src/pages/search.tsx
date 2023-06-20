@@ -11,8 +11,6 @@ const Search = () => {
     text: searchText,
   });
 
-  console.log(searchProducts);
-
   return (
     <section className="container mx-auto mt-16 flex px-4 sm:px-0">
       <CategoryList />
@@ -30,7 +28,7 @@ const Search = () => {
         </div>
         <ProductList
           products={searchProducts || []}
-          classes="md:grid-cols-[repeat(auto-fit,minmax(250px,_1fr))]"
+          classes="md:grid-cols-[repeat(4,minmax(250px,_1fr))]"
         />
       </div>
     </section>
