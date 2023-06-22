@@ -59,13 +59,13 @@ const CategoryList = () => {
 
         <div className="flex w-full flex-col pb-3">
           <span className="text-lg font-medium">Price</span>
-          <div className="flex w-[65%] flex-row items-center justify-between">
+          <div className="flex w-[80%] flex-row items-center justify-between">
             <Input
-              containerProps={{ className: "min-w-[72px] w-[15px]" }}
+              containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
               label="From"
             />
             <Input
-              containerProps={{ className: "min-w-[72px] w-[45px]" }}
+              containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
               label="To"
             />
             <Button className="ml-2 h-[30px] w-[30px] p-0">GO</Button>
@@ -73,13 +73,13 @@ const CategoryList = () => {
         </div>
         <div className="flex flex-col pb-3">
           <span className="text-lg font-medium">Fees</span>
-          <div className="flex w-[65%] flex-row items-center justify-between">
+          <div className="flex w-[80%] flex-row items-center justify-between">
             <Input
-              containerProps={{ className: "min-w-[72px] w-[15px]" }}
+              containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
               label="From"
             />
             <Input
-              containerProps={{ className: "min-w-[72px] w-[45px]" }}
+              containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
               label="To"
             />
             <Button className="ml-2 h-[30px] w-[30px] p-0">GO</Button>
