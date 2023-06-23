@@ -20,7 +20,7 @@ const Search = () => {
   );
 
   const onOptionClick = (item: string) => {
-    setSortField(menuItemsLabel[item].field);
+    setSortField(menuItemsLabel[item]?.field);
     setSortCriteria(menuItemsLabel[item].criteria);
   };
 
