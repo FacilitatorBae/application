@@ -9,12 +9,9 @@ import {
 import { IoHeartOutline, IoSearch } from "react-icons/io5";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { menuItemsLabel, menuItemsFields } from "./models";
 import { useFavorites } from "~/hooks/useFavorites";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
-const { MY_PROFILE, MY_ORDERS, LOGOUT, LOGIN } = menuItemsFields;
 
 const Header = () => {
   const { status } = useSession();
@@ -31,23 +28,6 @@ const Header = () => {
     if (searchValue) {
       // TODO: Fix eslint to not yell @typescript-eslint/no-floating-promises
       void router.push({ pathname: "/search/[q]", query: { q: searchValue } });
-    }
-  };
-
-  const onMenuItemClick = (item: string) => {
-    switch (item) {
-      case MY_PROFILE:
-        break;
-      case MY_ORDERS:
-        break;
-      case LOGOUT:
-        void signOut();
-        break;
-      case LOGIN:
-        void signIn();
-        break;
-      default:
-        break;
     }
   };
 
@@ -120,32 +100,26 @@ const Header = () => {
               </MenuHandler>
               {status === "authenticated" ? (
                 <MenuList className="rounded-none">
-                  <MenuItem
-                    onClick={onMenuItemClick.bind(null, MY_PROFILE)}
-                    className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white"
-                  >
-                    {menuItemsLabel[MY_PROFILE]?.label}
+                  <MenuItem className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white">
+                    My Profile
+                  </MenuItem>
+                  <MenuItem className="flex justify-start rounded-none  hover:bg-blue-brand hover:text-white">
+                    My Orders
                   </MenuItem>
                   <MenuItem
-                    onClick={onMenuItemClick.bind(null, MY_ORDERS)}
-                    className="flex justify-start rounded-none  hover:bg-blue-brand hover:text-white"
-                  >
-                    {menuItemsLabel[MY_ORDERS]?.label}
-                  </MenuItem>
-                  <MenuItem
-                    onClick={onMenuItemClick.bind(null, LOGOUT)}
+                    onClick={() => void signOut()}
                     className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white"
                   >
-                    {menuItemsLabel[LOGOUT]?.label}
+                    Logout
                   </MenuItem>
                 </MenuList>
               ) : (
                 <MenuList className="w-[100px] rounded-none">
                   <MenuItem
-                    onClick={onMenuItemClick.bind(null, LOGIN)}
+                    onClick={() => void signIn()}
                     className="flex  justify-start rounded-none hover:bg-blue-brand hover:text-white"
                   >
-                    {menuItemsLabel[LOGIN]?.label}
+                    Log in
                   </MenuItem>
                 </MenuList>
               )}

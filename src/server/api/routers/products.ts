@@ -25,7 +25,11 @@ export const productsRouter = createTRPCRouter({
   }),
   getSearchProducts: publicProcedure
     .input(
-      z.object({ text: z.string(), field: z.string(), criteria: z.string() })
+      z.object({
+        text: z.string(),
+        field: z.enum(["price", "fee"]),
+        criteria: z.enum(["asc", "desc"]),
+      })
     )
     .query(async ({ ctx, input }) => {
       const products = await ctx.prisma.product.findMany({

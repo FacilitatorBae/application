@@ -20,5 +20,15 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  pageExtensions: [
+    "page.tsx",
+    "page.ts",
+    "page.jsx",
+    "page.js",
+    "route.tsx",
+    "route.ts",
+    "route.jsx",
+    "route.js",
+  ],
 };
 export default withRoutes(config);
