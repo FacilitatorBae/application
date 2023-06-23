@@ -35,11 +35,15 @@ const mockCategory = [
   },
 ];
 
-const CategoryList = () => {
+interface CategoryListProps {
+  searchTerm: string;
+}
+
+const CategoryList: React.FC<CategoryListProps> = ({ searchTerm }) => {
   return (
     <div className="flex h-full w-[25%] flex-col font-poppins">
       <div className="flex w-full flex-col">
-        <div className="mb-5 w-full text-2xl">Bike with 26 inch wheels</div>
+        <div className="mb-5 w-full text-2xl">{searchTerm}</div>
         {mockCategory.map((categ) => (
           <div key={categ.title} className="flex flex-col pb-3">
             <span className="text-lg font-medium">{categ.title}</span>

@@ -14,4 +14,7 @@ const menuItemsLabel = {
   [LOGOUT]: { label: "Logout" },
 };
 
-export { menuItemsFields, menuItemsLabel };
+const firstCharToCaps = (term: string) =>
+  (term && term[0]?.toUpperCase() + term.slice(1)) || "";
+
+export { menuItemsFields, menuItemsLabel, firstCharToCaps };

@@ -2,6 +2,7 @@ import { CategoryList, ProductList } from "~/components";
 import { Select, Option } from "@material-tailwind/react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import { firstCharToCaps } from "../../components/models";
 
 const Search = () => {
   const router = useRouter<"/search/[q]">();
@@ -13,7 +14,7 @@ const Search = () => {
 
   return (
     <section className="container mx-auto mt-16 flex px-4 sm:px-0">
-      <CategoryList />
+      <CategoryList searchTerm={firstCharToCaps(router.query.q || "")} />
       <div className="w-full">
         <div className="flex justify-end">
           <div className="mb-4 max-w-max">
