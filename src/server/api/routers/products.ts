@@ -24,7 +24,9 @@ export const productsRouter = createTRPCRouter({
     return products;
   }),
   getSearchProducts: publicProcedure
-    .input(z.object({ text: z.string() }))
+    .input(
+      z.object({ text: z.string(), field: z.string(), criteria: z.string() })
+    )
     .query(async ({ ctx, input }) => {
       const products = await ctx.prisma.product.findMany({
         select: defaultProductSelect,
@@ -33,8 +35,12 @@ export const productsRouter = createTRPCRouter({
             contains: input.text,
           },
         },
+        orderBy: [
+          {
+            [input.field]: input.criteria,
+          },
+        ],
       });
-
       return products;
     }),
   getProductById: publicProcedure
@@ -44,7 +50,6 @@ export const productsRouter = createTRPCRouter({
         select: defaultProductSelect,
         where: { id: Number(input.id) },
       });
-
       return product;
     }),
 });
