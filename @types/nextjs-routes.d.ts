@@ -16,6 +16,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/">
     | StaticRoute<"/indexNext">
     | DynamicRoute<"/items/[id]", { "id": string }>
+    | StaticRoute<"/search/models">
     | DynamicRoute<"/search/[q]", { "q": string }>;
 
   interface StaticRoute<Pathname> {
