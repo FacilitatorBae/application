@@ -98,11 +98,16 @@ const CategoryList: React.FC<CategoryListProps> = ({ searchTerm }) => {
               containerProps={{
                 className: "p-0",
               }}
+              className="hover:before:opacity-0"
             />
           </div>
           <div className="flex w-[60%] flex-row items-center justify-between">
             <span className="font-light">Certified Sellers</span>
-            <Checkbox ripple={false} containerProps={{ className: "p-0" }} />
+            <Checkbox
+              ripple={false}
+              containerProps={{ className: "p-0" }}
+              className="hover:before:opacity-0"
+            />
           </div>
         </div>
       </div>
