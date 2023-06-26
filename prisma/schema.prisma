@@ -57,17 +57,17 @@ model User {
 }
 
 model Product {
-    id         Int       @id @default(autoincrement())
+    id         Int      @id @default(autoincrement())
     title      String
-    isNew      Boolean   @default(false)
-    isBusiness Boolean   @default(false)
-    isHot      Boolean   @default(false)
+    isNew      Boolean  @default(false)
+    isBusiness Boolean  @default(false)
+    isHot      Boolean  @default(false)
     url        String
     price      Int
     fee        Int
-    owner      String    @default("Germán Beder")
-    categoryId Int?
-    category   Category? @relation(fields: [categoryId], references: [id])
+    owner      String   @default("Germán Beder")
+    categoryId Int
+    category   Category @relation(fields: [categoryId], references: [id])
 }
 
 model Category {
