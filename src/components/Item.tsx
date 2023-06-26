@@ -21,7 +21,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
   const { id, title, url, price, fee, isBusiness, isNew } = product;
 
   const { data: categoryNest } = api.categories.getCategoryNestById.useQuery({
-    id: product.categoryId.toString(),
+    id: product.categoryId?.toString(),
   });
 
   const categoriesComponent = categoryNest?.map((item) => {
