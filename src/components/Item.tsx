@@ -5,6 +5,7 @@ import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useFavorites } from "~/hooks/useFavorites";
 import { useMemo } from "react";
 import { type Product } from "@prisma/client";
+import { api } from "~/utils/api";
 
 interface ProductListProps {
   product: Product;
@@ -18,6 +19,15 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
   } = useFavorites();
 
   const { id, title, url, price, fee, isBusiness, isNew } = product;
+
+  const { data: categoryNest } = api.categories.getCategoryNestById.useQuery({
+    id: product.categoryId.toString(),
+  });
+
+  const categoriesComponent = categoryNest?.map((item) => {
+    const isLastItem = categoryNest.length === categoryNest.indexOf(item) + 1;
+    return isLastItem ? item : `${item} > `;
+  });
 
   const isItemFaved = useMemo(
     () => favorites.find((item) => item.id === id),
@@ -37,9 +47,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
 
   return (
     <section className="container mx-auto my-16 px-4 font-poppins sm:px-0">
-      <div className="mb-6 h-[20px] w-full">
-        Category {`>`} Category {`>`} Category
-      </div>
+      <div className="mb-6 h-[20px] w-full">{categoriesComponent}</div>
       <div className="flex w-full justify-between">
         <div className="relative flex aspect-[2/1] w-[45%] flex-col">
           <div className="relative h-[80%]">
