@@ -66,11 +66,17 @@ model Product {
     price      Int
     fee        Int
     owner      String   @default("Germán Beder")
-    category   Category @default(General)
+    categoryId Int
+    category   Category @relation(fields: [categoryId], references: [id])
 }
 
-enum Category {
-    General
-    Sports
-    Gaming
+model Category {
+    id        Int        @id @default(autoincrement())
+    name      String
+    parentId  Int?
+    parent    Category?  @relation("ParentCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    createdAt DateTime   @default(now())
+    deletedAt DateTime?
+    category  Category[] @relation("ParentCategory")
+    product   Product[]
 }

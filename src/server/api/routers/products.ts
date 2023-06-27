@@ -13,7 +13,7 @@ const defaultProductSelect = Prisma.validator<Prisma.ProductSelect>()({
   price: true,
   fee: true,
   owner: true,
-  category: true,
+  categoryId: true,
 });
 
 export const productsRouter = createTRPCRouter({
