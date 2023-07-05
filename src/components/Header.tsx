@@ -31,6 +31,10 @@ const Header = () => {
     }
   };
 
+  const onMyAccountClick = () => {
+    void router.push({ pathname: "/myAccount" });
+  };
+
   return (
     <>
       <div className="bg-blue-brand p-2 font-inter text-xs text-white">
@@ -43,7 +47,7 @@ const Header = () => {
         <div className="container mx-auto flex items-center justify-between py-4">
           <div className="flex w-1/4 justify-start">
             <Link href="/">
-              <span className="font-comfortaa text-2xl">tOUHU</span>
+              <span className="font-comfortaa text-2xl">VENDio</span>
             </Link>
           </div>
           <div className="flex-1 px-7">
@@ -92,7 +96,7 @@ const Header = () => {
               <MenuHandler>
                 {/* <Button variant="gradient">Bottom End</Button> */}
                 <button className="flex items-center justify-center">
-                  <span className="font-poppins text-sm">My Account</span>
+                  <span className="font-poppins text-sm">Options</span>
                   <span className="text-2xl">
                     <MdOutlineExpandMore />
                   </span>
@@ -100,8 +104,11 @@ const Header = () => {
               </MenuHandler>
               {status === "authenticated" ? (
                 <MenuList className="rounded-none">
-                  <MenuItem className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white">
-                    My Profile
+                  <MenuItem
+                    onClick={onMyAccountClick}
+                    className="flex justify-start rounded-none hover:bg-blue-brand hover:text-white"
+                  >
+                    My Account
                   </MenuItem>
                   <MenuItem className="flex justify-start rounded-none  hover:bg-blue-brand hover:text-white">
                     My Orders
