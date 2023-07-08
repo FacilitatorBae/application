@@ -9,6 +9,11 @@ interface ContextState {
     add: (product: Product) => void;
     remove: (product: Product) => void;
   };
+  newPost: {
+    activeStep: number;
+    next: () => void;
+    prev: () => void;
+  };
 }
 
 const initialContext: ContextState = {
@@ -19,6 +24,11 @@ const initialContext: ContextState = {
     add: () => ({}),
     remove: () => ({}),
   },
+  newPost: {
+    activeStep: 1,
+    next: () => ({}),
+    prev: () => ({}),
+  },
 };
 
 export const Context = createContext<ContextState>(initialContext);
@@ -26,6 +36,8 @@ export const Context = createContext<ContextState>(initialContext);
 const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
   const [favoritesIsOpen, setFavoritesIsOpen] = useState(false);
   const [favoritesItems, setFavoritesItems] = useState<Product[]>([]);
+
+  const [activeStep, setActiveStep] = useState(1);
 
   const addFavorite = (product: Product) => {
     const isAlreadyFaved = favoritesItems.find(
@@ -41,6 +53,14 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
     setFavoritesItems((prev) => prev.filter((fav) => fav.id !== product.id));
   };
 
+  const nextStep = () => {
+    setActiveStep((prev) => prev + 1);
+  };
+
+  const prevStep = () => {
+    setActiveStep((prev) => prev - 1);
+  };
+
   return (
     <Context.Provider
       value={{
@@ -50,6 +70,11 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
           togglePanel: () => setFavoritesIsOpen((prev) => !prev),
           add: addFavorite,
           remove: removeFavorite,
+        },
+        newPost: {
+          activeStep: activeStep,
+          next: nextStep,
+          prev: prevStep,
         },
       }}
     >

@@ -35,12 +35,18 @@ const Header = () => {
     void router.push({ pathname: "/myAccount" });
   };
 
+  const onSellClick = () => {
+    void router.push({ pathname: "/newPost" });
+  };
+
   return (
     <>
       <div className="bg-blue-brand p-2 font-inter text-xs text-white">
         <div className="container mx-auto flex justify-end">
           <span>Become a Partner</span>
-          <span className="pl-4">Sell your Products</span>
+          <div onClick={onSellClick} className="cursor-pointer pl-4">
+            Sell your Products
+          </div>
         </div>
       </div>
       <header className="bg-white px-4 shadow-lg">
