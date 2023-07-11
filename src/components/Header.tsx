@@ -8,16 +8,20 @@ import {
 } from "@material-tailwind/react";
 import { IoHeartOutline, IoSearch } from "react-icons/io5";
 import { MdOutlineExpandMore } from "react-icons/md";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useFavorites } from "~/hooks/useFavorites";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import LoginModal from "./LoginModal";
 
 const Header = () => {
   const { status } = useSession();
   const router = useRouter<"/search/[q]">();
   const searchParams = router.query.q as string;
   const [searchValue, setSearchValue] = useState("");
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const handleLoginModalOpen = () => setIsLoginModalOpen((cur) => !cur);
+
   const { items, togglePanel } = useFavorites();
 
   useEffect(() => {
@@ -133,7 +137,7 @@ const Header = () => {
               ) : (
                 <MenuList className="w-[100px] rounded-none">
                   <MenuItem
-                    onClick={() => void signIn()}
+                    onClick={handleLoginModalOpen}
                     className="flex  justify-start rounded-none hover:bg-blue-brand hover:text-white"
                   >
                     Log in
@@ -143,6 +147,7 @@ const Header = () => {
             </Menu>
           </div>
         </div>
+        <LoginModal open={isLoginModalOpen} handleOpen={handleLoginModalOpen} />
       </header>
     </>
   );
