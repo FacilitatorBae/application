@@ -6,10 +6,11 @@ import { Prisma } from "@prisma/client";
 const defaultProductSelect = Prisma.validator<Prisma.ProductSelect>()({
   id: true,
   title: true,
+  description: true,
   isNew: true,
   isBusiness: true,
   isHot: true,
-  url: true,
+  pictures: true,
   price: true,
   fee: true,
   owner: true,
@@ -55,5 +56,37 @@ export const productsRouter = createTRPCRouter({
         where: { id: Number(input.id) },
       });
       return product;
+    }),
+  newProduct: publicProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        isNew: z.boolean(),
+        isBusiness: z.boolean(),
+        isHot: z.boolean(),
+        pictures: z.string(),
+        price: z.string(),
+        fee: z.string(),
+        owner: z.string(),
+        categoryId: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const newProduct = await ctx.prisma.product.create({
+        data: {
+          title: input.title,
+          description: input.description,
+          isNew: input.isNew,
+          isBusiness: input.isBusiness,
+          isHot: input.isHot,
+          pictures: input.pictures,
+          price: Number(input.price),
+          fee: Number(input.fee),
+          owner: input.owner,
+          categoryId: input.categoryId,
+        },
+      });
+      return newProduct;
     }),
 });

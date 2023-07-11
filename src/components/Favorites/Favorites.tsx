@@ -14,7 +14,7 @@ const Favorites = () => {
       onClose={togglePanel}
       className="fixed top-0"
     >
-      <div className="flex-start flex flex-col pl-6">
+      <div className="flex-start flex flex-col pl-6 font-poppins">
         <Button
           className="flex-start mt-5 flex max-w-max flex-col p-0 text-3xl"
           variant="text"

@@ -45,7 +45,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
             )}
           </button>
           <img
-            src={product.url}
+            src={JSON.parse(product.pictures)[0]}
             alt={product.title}
             className="h-full w-full object-cover object-center"
             loading="lazy"

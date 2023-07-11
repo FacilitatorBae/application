@@ -18,7 +18,8 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
     remove: removeFavorite,
   } = useFavorites();
 
-  const { id, title, url, price, fee, isBusiness, isNew } = product;
+  const { id, title, description, pictures, price, fee, isBusiness, isNew } =
+    product;
 
   const { data: categoryNest } = api.categories.getCategoryNestById.useQuery({
     id: product.categoryId?.toString(),
@@ -53,47 +54,47 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
           <div className="relative h-[80%]">
             <Image
               className="h-full w-full object-cover object-center"
-              src={url}
+              src={JSON.parse(pictures)[0]}
               alt={title}
               fill
               unoptimized
             />
           </div>
-          <div className="mt-[20px] flex h-[200px] w-full flex-row justify-between">
-            <div className="relative h-full w-[22.5%] ">
+          <div className="mt-[20px] flex max-h-[200px] w-full flex-row justify-between">
+            <div className="relative aspect-[1] w-[22.5%]">
               <Image
                 className="h-full w-full object-cover object-center"
-                src={url}
+                src={JSON.parse(pictures)[1]}
                 alt={title}
                 fill
                 unoptimized
               />
             </div>
-            <div className="relative h-full w-[22.5%] ">
+            <div className="relative aspect-[1] w-[22.5%]">
               <Image
                 className="h-full w-full object-cover object-center"
-                src={url}
+                src={JSON.parse(pictures)[2]}
                 alt={title}
                 fill
                 unoptimized
               />
             </div>
-            <div className="relative h-full w-[22.5%] ">
+            <div className="relative aspect-[1] w-[22.5%]">
               <Image
                 className="h-full w-full object-cover object-center"
-                src={url}
+                src={JSON.parse(pictures)[0]}
                 alt={title}
                 fill
                 unoptimized
               />
             </div>
-            <div className="relative h-full w-[22.5%] ">
+            <div className="relative aspect-[1] w-[22.5%]">
               <div className="absolute z-10 flex h-full w-full cursor-pointer items-center justify-center bg-white/70 backdrop-blur-[2px]">
                 <span className="	text-xl font-bold">View All</span>
               </div>
               <Image
                 className="h-full w-full object-cover object-center"
-                src={url}
+                src={JSON.parse(pictures)[0]}
                 alt={title}
                 fill
                 unoptimized
@@ -132,15 +133,9 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
               FACILITATE
             </Button>
           </div>
-          <span className="pt-10">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </span>
+          <div className="break-all pt-10">
+            <span>{description}</span>
+          </div>
         </div>
       </div>
     </section>
