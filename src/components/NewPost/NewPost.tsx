@@ -7,8 +7,7 @@ import { useSession } from "next-auth/react";
 
 const Account = () => {
   const { data: categories } = api.categories.getAllCategories.useQuery();
-  const test = useSession();
-  console.log(test);
+
   const { activeStep: activeStep, resetNewPostData: resetNewPostData } =
     useNewPost();
 
