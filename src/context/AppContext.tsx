@@ -1,5 +1,10 @@
-import { type Product, type Category } from "@prisma/client";
+import { type Product, type Category, type Address } from "@prisma/client";
 import React, { type PropsWithChildren, createContext, useState } from "react";
+
+type UserAddress = Omit<
+  Address,
+  "id" | "createdAt" | "deletedAt" | "updatedAt"
+>;
 
 interface ContextState {
   favorites: {
@@ -8,6 +13,10 @@ interface ContextState {
     togglePanel: () => void;
     add: (product: Product) => void;
     remove: (product: Product) => void;
+  };
+  userDetails: {
+    address: UserAddress;
+    updateAddress: (userAddress: UserAddress) => void;
   };
   categories: {
     allCategories: Category[];
@@ -42,6 +51,16 @@ const initialContext: ContextState = {
     add: () => ({}),
     remove: () => ({}),
   },
+  userDetails: {
+    address: {
+      address: "",
+      addressDetails: "",
+      zipCode: "",
+      state: "",
+      country: "",
+    },
+    updateAddress: () => ({}),
+  },
   categories: { allCategories: [], setCategories: () => ({}) },
   newPost: {
     activeStep: 1,
@@ -63,13 +82,21 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
   const [favoritesIsOpen, setFavoritesIsOpen] = useState(false);
   const [favoritesItems, setFavoritesItems] = useState<Product[]>([]);
 
+  const [userDetailsAddress, setUserDetailsAddress] = useState<UserAddress>({
+    address: "",
+    addressDetails: "",
+    zipCode: "",
+    state: "",
+    country: "",
+  });
+
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const [activeStep, setActiveStep] = useState(1);
   const [newPostDetails, setNewPostDetails] = useState({});
   const [pickedCategories, setPickedCategories] = useState<
     { id: number; name: string }[]
   >([]);
-
-  const [categories, setCategories] = useState<Category[]>([]);
 
   const addFavorite = (product: Product) => {
     const isAlreadyFaved = favoritesItems.find(
@@ -124,6 +151,10 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
           togglePanel: () => setFavoritesIsOpen((prev) => !prev),
           add: addFavorite,
           remove: removeFavorite,
+        },
+        userDetails: {
+          address: userDetailsAddress,
+          updateAddress: setUserDetailsAddress,
         },
         categories: { allCategories: categories, setCategories: setCategories },
         newPost: {
