@@ -19,7 +19,7 @@ const FavItem: React.FC<FavItemProps> = ({ item }) => {
       <div className="relative aspect-[1/1] h-full object-cover object-center">
         <Image
           className="h-full w-full object-cover object-center"
-          src={item.url}
+          src={JSON.parse(item.pictures)[0]}
           alt={item.title}
           fill
           unoptimized

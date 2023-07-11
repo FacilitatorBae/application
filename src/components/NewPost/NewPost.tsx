@@ -1,12 +1,30 @@
 import { useNewPost } from "~/hooks/useNewPost";
+import { useCategories } from "~/hooks/useCategories";
 import { First, Second, Third } from "./contentTypes";
+import { useEffect } from "react";
+import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 const Account = () => {
-  const {
-    activeStep: activeStep,
-    next: nextStep,
-    prev: prevStep,
-  } = useNewPost();
+  const { data: categories } = api.categories.getAllCategories.useQuery();
+  const test = useSession();
+  console.log(test);
+  const { activeStep: activeStep, resetNewPostData: resetNewPostData } =
+    useNewPost();
+
+  const { allCategories, setCategories } = useCategories();
+
+  useEffect(() => {
+    if (!allCategories?.length) {
+      categories && setCategories(categories);
+    }
+  }, [categories, allCategories]);
+
+  useEffect(() => {
+    return () => {
+      resetNewPostData();
+    };
+  }, []);
 
   const contentMapping = () => {
     switch (activeStep) {

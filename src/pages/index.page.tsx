@@ -9,7 +9,7 @@ const Home = () => {
       {data ? (
         <ProductList
           products={data}
-          classes="md:grid-cols-[repeat(auto-fit,minmax(300px,_1fr))]"
+          classes="md:grid-cols-[repeat(5,minmax(250px,_1fr))]"
         />
       ) : (
         "NO DATA"

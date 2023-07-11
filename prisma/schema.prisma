@@ -59,10 +59,11 @@ model User {
 model Product {
     id         Int      @id @default(autoincrement())
     title      String
+    description String  @db.Text
     isNew      Boolean  @default(false)
     isBusiness Boolean  @default(false)
     isHot      Boolean  @default(false)
-    url        String
+    pictures   String   @db.Text
     price      Int
     fee        Int
     owner      String   @default("Germán Beder")

@@ -36,7 +36,11 @@ const Header = () => {
   };
 
   const onSellClick = () => {
-    void router.push({ pathname: "/newPost" });
+    if (status === "authenticated") {
+      void router.push({ pathname: "/newPost" });
+    } else {
+      alert("Log In to Sale");
+    }
   };
 
   return (

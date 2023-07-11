@@ -1,55 +1,86 @@
 import { useState } from "react";
-import { Card, List, ListItem, Breadcrumbs } from "@material-tailwind/react";
+import {
+  Card,
+  List,
+  ListItem,
+  Breadcrumbs,
+  IconButton,
+} from "@material-tailwind/react";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { useNewPost } from "~/hooks/useNewPost";
-
-const mockList = [
-  { id: 0, title: "Home" },
-  { id: 1, title: "Sports" },
-  { id: 2, title: "Gaming" },
-  { id: 3, title: "Electronics" },
-  { id: 4, title: "Services" },
-  { id: 5, title: "Football", parentId: 1 },
-  { id: 6, title: "Basketball", parentId: 1 },
-  { id: 7, title: "Volleyball", parentId: 1 },
-  { id: 8, title: "Headphones", parentId: 2 },
-  { id: 9, title: "Graphic Cards", parentId: 2 },
-];
+import { useCategories } from "~/hooks/useCategories";
 
 const Second = () => {
   const {
-    activeStep: activeStep,
     next: nextStep,
     prev: prevStep,
+    pickedCategories,
+    addPickedCategory,
+    removePickedCategory,
+    resetPickedCategories,
   } = useNewPost();
 
-  const [pickedCategories, setPickedCategories] = useState([]);
+  const { allCategories } = useCategories();
+
+  console.log(allCategories);
+
   const [parentId, setParentId] = useState(0);
 
+  const isPickedLastCategory =
+    pickedCategories.length > 0 &&
+    allCategories?.filter(
+      (item) =>
+        item.parentId === pickedCategories[pickedCategories.length - 1]?.id
+    ).length === 0;
+
   const listToRender = () => {
-    const listToRender = mockList.filter((item) =>
-      parentId ? item.parentId === parentId : !item.parentId
-    );
-
-    const onListItemClick = (listItem) => {
-      const isLastCategory =
-        mockList.filter((item) => item.parentId === listItem.id).length === 0;
-
-      setParentId(listItem.id);
-      setPickedCategories((prev) => [...prev, listItem]);
-      if (isLastCategory) {
-        nextStep();
+    const listToRender = () => {
+      if (!isPickedLastCategory) {
+        return pickedCategories &&
+          pickedCategories[pickedCategories.length - 1]?.parentId
+          ? allCategories?.filter(
+              (item) =>
+                item.parentId ===
+                pickedCategories[pickedCategories.length - 1]?.id
+            )
+          : allCategories?.filter((item) =>
+              parentId ? item.parentId === parentId : !item.parentId
+            );
+      } else {
+        return allCategories?.filter(
+          (item) =>
+            item.id === pickedCategories[pickedCategories.length - 1]?.id
+        );
       }
     };
 
-    return listToRender.map((item) => (
+    const onListItemClick = (listItem: {
+      id: number;
+      parentId?: number;
+      name: string;
+    }) => {
+      const isLastCategory =
+        allCategories?.filter((item) => item.parentId === listItem.id)
+          .length === 0;
+      if (isLastCategory) {
+        if (!pickedCategories.includes(listItem)) {
+          setParentId(listItem.id);
+          addPickedCategory(listItem);
+        }
+      } else {
+        setParentId(listItem.id);
+        addPickedCategory(listItem);
+      }
+    };
+
+    return listToRender()?.map((item) => (
       <List>
         <ListItem
           onClick={() => {
             onListItemClick(item);
           }}
         >
-          {item.title}
+          {item.name}
         </ListItem>
       </List>
     ));
@@ -68,30 +99,47 @@ const Second = () => {
           <span className="flex items-center">Prev Step</span>
         </div>
         <div className="text-center font-poppins">Pick the categories</div>
-        <Breadcrumbs separator=">">
-          <a
-            onClick={() => {
-              setParentId(0);
-              setPickedCategories([]);
-            }}
-          >
-            All
-          </a>
-          {pickedCategories.map((item) => (
+        <div className="pl-5">
+          <Breadcrumbs separator=">">
             <a
+              className="font-poppins font-thin"
               onClick={() => {
-                setParentId(item.id);
+                setParentId(0);
+                resetPickedCategories();
               }}
             >
-              {item.title}
+              All
             </a>
-          ))}
-        </Breadcrumbs>
+            {pickedCategories.map((item) => (
+              <a
+                className="font-poppins font-thin"
+                onClick={() => {
+                  setParentId(item.id);
+                  removePickedCategory(item);
+                }}
+              >
+                {item.name}
+              </a>
+            ))}
+          </Breadcrumbs>
+        </div>
         <div className="flex w-full justify-center py-20">
-          <div className="flex w-[450px] flex-row items-center">
+          <div className="flex flex-col items-end">
             <Card className="h-60 w-96 overflow-y-scroll">
               {listToRender()}
             </Card>
+            {isPickedLastCategory && (
+              <div className="rounded-full pt-5">
+                <IconButton
+                  onClick={() => {
+                    nextStep();
+                  }}
+                  className="rounded-full"
+                >
+                  <BiChevronRight size={24} />
+                </IconButton>
+              </div>
+            )}
           </div>
         </div>
       </div>
