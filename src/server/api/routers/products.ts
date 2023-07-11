@@ -1,4 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  authenticatedProcedure,
+  createTRPCRouter,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
 
@@ -57,7 +61,7 @@ export const productsRouter = createTRPCRouter({
       });
       return product;
     }),
-  newProduct: publicProcedure
+  newProduct: authenticatedProcedure
     .input(
       z.object({
         title: z.string(),
