@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -57,18 +56,18 @@ model User {
 }
 
 model Product {
-    id         Int      @id @default(autoincrement())
-    title      String
-    description String  @db.Text
-    isNew      Boolean  @default(false)
-    isBusiness Boolean  @default(false)
-    isHot      Boolean  @default(false)
-    pictures   String   @db.Text
-    price      Int
-    fee        Int
-    owner      String   @default("Germán Beder")
-    categoryId Int
-    category   Category @relation(fields: [categoryId], references: [id])
+    id          Int      @id @default(autoincrement())
+    title       String
+    description String   @db.Text
+    isNew       Boolean  @default(false)
+    isBusiness  Boolean  @default(false)
+    isHot       Boolean  @default(false)
+    pictures    String   @db.Text
+    price       Int
+    fee         Int
+    owner       String   @default("Germán Beder")
+    categoryId  Int
+    category    Category @relation(fields: [categoryId], references: [id])
 }
 
 model Category {
