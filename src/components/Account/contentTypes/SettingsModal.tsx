@@ -1,26 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Dialog, Input } from "@material-tailwind/react";
-import { type Address } from "@prisma/client";
 import { useState } from "react";
-import { useUserDetails } from "~/hooks/userUserDetails";
-import { api } from "~/utils/api";
+import { type RouterInputs, api } from "~/utils/api";
 
-type UserAddress = Omit<
-  Address,
-  "id" | "createdAt" | "deletedAt" | "updatedAt"
->;
+type UserAddress = RouterInputs["users"]["updateUserDetailsById"];
 
 interface SettingsModalProps {
   open: boolean;
   handleOpen: () => void;
 }
 const SettingsModal: React.FC<SettingsModalProps> = ({ open, handleOpen }) => {
-  const { address: addressCtxData } = useUserDetails();
+  const [addressData, setAddressData] = useState<UserAddress>({
+    address: "",
+    addressDetails: "",
+    country: "",
+    state: "",
+    zipCode: "",
+  });
 
-  const { mutate: updateAddress } =
-    api.userDetails.updateUserDetailsById.useMutation();
+  const utils = api.useContext();
+  const { data: userDetails } = api.users.getUserDetails.useQuery();
 
-  const [addressData, setAddressData] = useState<UserAddress>(addressCtxData);
+  const { mutate: updateAddress } = api.users.updateUserDetailsById.useMutation(
+    {
+      onSuccess: async () => {
+        await utils.users.getUserDetails.invalidate();
+        handleOpen();
+      },
+    }
+  );
+
+  useEffect(() => {
+    const userAddress = userDetails?.address;
+    if (userAddress) {
+      setAddressData({
+        address: userAddress.address,
+        addressDetails: userAddress.addressDetails || "",
+        country: userAddress.country || "",
+        state: userAddress.state,
+        zipCode: userAddress.zipCode,
+      });
+    }
+  }, [userDetails]);
 
   const { address, addressDetails, zipCode, state, country } = addressData;
 

@@ -1,10 +1,13 @@
 import { Button } from "@material-tailwind/react";
 import SettingsModal from "./SettingsModal";
 import { useState } from "react";
+import { api } from "~/utils/api";
 
 const Settings = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const handleSettingsModalOpen = () => setIsSettingsModalOpen((cur) => !cur);
+
+  const { data: userDetails } = api.users.getUserDetails.useQuery();
 
   return (
     <div className="flex h-full w-[70%] flex-col justify-between bg-gray-300 p-5">
@@ -13,7 +16,10 @@ const Settings = () => {
         <div className="flex justify-between bg-gray-100 p-2">
           <div className="flex h-full flex-col justify-center font-poppins">
             <div className="font-bold">Address</div>
-            <div className="text-sm font-thin">Bank Street, Manhattan, USA</div>
+            <div className="text-sm font-thin">
+              {userDetails?.address?.address}, {userDetails?.address?.state}.{" "}
+              {userDetails?.address?.country}.
+            </div>
           </div>
           <div className="flex">
             <Button

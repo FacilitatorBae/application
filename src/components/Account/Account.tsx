@@ -1,28 +1,12 @@
 import { Card, List, ListItem } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Summary, Sales, Comms, Purchases, Settings } from "./contentTypes";
 import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
-import { useUserDetails } from "~/hooks/userUserDetails";
 
 const Account = () => {
-  const { data: sessionData } = useSession();
-
-  const { address, updateAddress } = useUserDetails();
-
-  const { data: userData } = api.userDetails.getUserDetailsById.useQuery({
-    id: sessionData?.user.id,
-  });
-
-  useEffect(() => {
-    if (userData) {
-      const { id, updatedAt, createdAt, deletedAt, ...userAddress } =
-        userData?.address;
-      updateAddress(userAddress);
-    }
-  }, [userData]);
-
   const [selectedListItem, setSelectedListItem] = useState("Summary");
+
+  const { data: userDetails } = api.users.getUserDetails.useQuery();
 
   const listMapping = () => {
     switch (selectedListItem) {
@@ -43,7 +27,9 @@ const Account = () => {
 
   return (
     <section className="container mx-auto mt-16 px-4 sm:px-0">
-      <div className="pb-16 font-poppins text-5xl font-bold">Hello Santi</div>
+      <div className="pb-16 font-poppins text-5xl font-bold">
+        {userDetails?.name}
+      </div>
       <div className="flex flex-row">
         <div className="w-[20%]">
           <Card>
