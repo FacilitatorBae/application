@@ -13,6 +13,10 @@ export const withAuthentication = (Component: any, FallbackComponent?: any) => {
   const AuthenticatedComponent = (props: any) => {
     const { status } = useSession();
 
+    if (status === "loading") {
+      return null;
+    }
+
     if (status === "unauthenticated") {
       if (!!FallbackComponent) {
         return <FallbackComponent {...props} />;
