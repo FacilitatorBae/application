@@ -28,7 +28,7 @@ export const usersRouter = createTRPCRouter({
     });
     return account;
   }),
-  updateUserDetailsById: authenticatedProcedure
+  updateUserAddress: authenticatedProcedure
     .input(
       z.object({
         address: z.string(),

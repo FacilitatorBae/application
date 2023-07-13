@@ -3,7 +3,7 @@ import { Button, Dialog, Input } from "@material-tailwind/react";
 import { useState } from "react";
 import { type RouterInputs, api } from "~/utils/api";
 
-type UserAddress = RouterInputs["users"]["updateUserDetailsById"];
+type UserAddress = RouterInputs["users"]["updateUserAddress"];
 
 interface SettingsModalProps {
   open: boolean;
@@ -21,14 +21,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, handleOpen }) => {
   const utils = api.useContext();
   const { data: userDetails } = api.users.getUserDetails.useQuery();
 
-  const { mutate: updateAddress } = api.users.updateUserDetailsById.useMutation(
-    {
-      onSuccess: async () => {
-        await utils.users.getUserDetails.invalidate();
-        handleOpen();
-      },
-    }
-  );
+  const { mutate: updateAddress } = api.users.updateUserAddress.useMutation({
+    onSuccess: async () => {
+      await utils.users.getUserDetails.invalidate();
+      handleOpen();
+    },
+  });
 
   useEffect(() => {
     const userAddress = userDetails?.address;
