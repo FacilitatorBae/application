@@ -1,4 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  authenticatedProcedure,
+} from "~/server/api/trpc";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
 
@@ -32,5 +36,34 @@ export const userDetailsRouter = createTRPCRouter({
         where: { id: input.id },
       });
       return account;
+    }),
+  updateUserDetailsById: authenticatedProcedure
+    .input(
+      z.object({
+        address: z.string(),
+        addressDetails: z.string(),
+        zipCode: z.string(),
+        country: z.string(),
+        state: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const updatedUserId = await ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          address: {
+            update: {
+              address: input.address,
+              addressDetails: input.addressDetails,
+              zipCode: input.zipCode,
+              state: input.state,
+              country: input.country,
+            },
+          },
+        },
+      });
+      return updatedUserId;
     }),
 });

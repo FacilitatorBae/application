@@ -1,9 +1,11 @@
 import { Button } from "@material-tailwind/react";
-import { useUserDetails } from "~/hooks/userUserDetails";
+import SettingsModal from "./SettingsModal";
+import { useState } from "react";
 
 const Settings = () => {
-  const { address, updateAddress } = useUserDetails();
-  console.log(address);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const handleSettingsModalOpen = () => setIsSettingsModalOpen((cur) => !cur);
+
   return (
     <div className="flex h-full w-[70%] flex-col justify-between bg-gray-300 p-5">
       <div className="pb-5 font-poppins text-3xl font-bold">Settings</div>
@@ -16,7 +18,7 @@ const Settings = () => {
           <div className="flex">
             <Button
               onClick={() => {
-                updateAddress((prev) => ({ ...prev, address: "JAJA" }));
+                handleSettingsModalOpen();
               }}
               size="sm"
             >
@@ -71,6 +73,10 @@ const Settings = () => {
           </div>
         </div>
       </div>
+      <SettingsModal
+        open={isSettingsModalOpen}
+        handleOpen={handleSettingsModalOpen}
+      />
     </div>
   );
 };

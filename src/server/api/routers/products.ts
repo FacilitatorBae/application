@@ -61,6 +61,7 @@ export const productsRouter = createTRPCRouter({
       });
       return product;
     }),
+
   newProduct: authenticatedProcedure
     .input(
       z.object({
