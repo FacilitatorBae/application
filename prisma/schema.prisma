@@ -39,20 +39,49 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(uuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    createdAt     DateTime  @default(now())
-    deletedAt     DateTime?
-    displayName   String?
-    firstName     String?
-    lastName      String?
-    password      String?
-    updatedAt     DateTime  @updatedAt
-    accounts      Account[]
-    sessions      Session[]
+    id              String        @id @default(uuid())
+    name            String?
+    email           String?       @unique
+    emailVerified   DateTime?
+    privacyAccepted DateTime?
+    image           String?
+    addressId       Int           @default(0)
+    address         Address       @relation(fields: [addressId], references: [id])
+    paymentMethodId Int           @default(0)
+    paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+    createdAt       DateTime      @default(now())
+    deletedAt       DateTime?
+    displayName     String?
+    firstName       String?
+    lastName        String?
+    password        String?
+    updatedAt       DateTime      @updatedAt
+    accounts        Account[]
+    sessions        Session[]
+}
+
+model Address {
+    id             Int       @id @default(autoincrement())
+    address        String
+    addressDetails String?
+    zipCode        String
+    state          String    @unique
+    country        String?
+    createdAt      DateTime  @default(now())
+    deletedAt      DateTime?
+    updatedAt      DateTime  @updatedAt
+    User           User[]
+}
+
+model PaymentMethod {
+    id             Int       @id @default(autoincrement())
+    cardCompany    String
+    cardNumber     String?
+    expirationDate DateTime
+    createdAt      DateTime  @default(now())
+    deletedAt      DateTime?
+    updatedAt      DateTime  @updatedAt
+    User           User[]
 }
 
 model Product {

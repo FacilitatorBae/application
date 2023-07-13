@@ -1,6 +1,11 @@
 import { Button } from "@material-tailwind/react";
+import SettingsModal from "./SettingsModal";
+import { useState } from "react";
 
 const Settings = () => {
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const handleSettingsModalOpen = () => setIsSettingsModalOpen((cur) => !cur);
+
   return (
     <div className="flex h-full w-[70%] flex-col justify-between bg-gray-300 p-5">
       <div className="pb-5 font-poppins text-3xl font-bold">Settings</div>
@@ -11,7 +16,14 @@ const Settings = () => {
             <div className="text-sm font-thin">Bank Street, Manhattan, USA</div>
           </div>
           <div className="flex">
-            <Button size="sm">Edit</Button>
+            <Button
+              onClick={() => {
+                handleSettingsModalOpen();
+              }}
+              size="sm"
+            >
+              Edit
+            </Button>
           </div>
         </div>
       </div>
@@ -61,6 +73,10 @@ const Settings = () => {
           </div>
         </div>
       </div>
+      <SettingsModal
+        open={isSettingsModalOpen}
+        handleOpen={handleSettingsModalOpen}
+      />
     </div>
   );
 };

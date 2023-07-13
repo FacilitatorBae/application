@@ -3,7 +3,6 @@ import { useCategories } from "~/hooks/useCategories";
 import { First, Second, Third } from "./contentTypes";
 import { useEffect } from "react";
 import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
 
 const Account = () => {
   const { data: categories } = api.categories.getAllCategories.useQuery();
