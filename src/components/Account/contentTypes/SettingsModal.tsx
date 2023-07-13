@@ -24,7 +24,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, handleOpen }) => {
 
   const { address, addressDetails, zipCode, state, country } = addressData;
 
-  const handleOnChange = (key, value) => {
+  const handleOnChange = (key: string, value: string) => {
     setAddressData((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -48,7 +48,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, handleOpen }) => {
         <div className="pb-3">
           <Input
             label="Address Details"
-            value={addressDetails}
+            value={addressDetails?.toString()}
             onChange={(e) => {
               handleOnChange("addressDetails", e.target.value);
             }}
@@ -75,7 +75,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ open, handleOpen }) => {
         <div className="pb-3">
           <Input
             label="Country"
-            value={country}
+            value={country?.toString()}
             onChange={(e) => {
               handleOnChange("country", e.target.value);
             }}
