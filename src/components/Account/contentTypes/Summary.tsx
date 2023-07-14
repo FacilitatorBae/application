@@ -2,16 +2,23 @@ import { BiMedal } from "react-icons/bi";
 import { BsGift, BsTruck, BsMegaphone } from "react-icons/bs";
 import { IconContext } from "react-icons";
 import { Progress } from "@material-tailwind/react";
+import { api } from "~/utils/api";
 
 const Summary = () => {
+  const { data: userDetails } = api.users.getUserDetails.useQuery();
+
+  console.log(userDetails);
+
   return (
     <div className="flex h-full w-[70%] flex-col justify-between bg-gray-300 p-5">
       <div className="pb-5 font-poppins text-3xl font-bold">Summary</div>
       <div className="flex w-full flex-col justify-between pb-5">
         <div className="flex justify-between bg-gray-100 p-2">
           <div className="flex h-full flex-col justify-center font-poppins">
-            <div className="font-bold">John Doe</div>
-            <div className="text-sm font-thin">New York</div>
+            <div className="font-bold">{userDetails?.name}</div>
+            <div className="text-sm font-thin">
+              {userDetails?.address?.state}
+            </div>
           </div>
           <div className="flex h-full w-[40%] justify-between font-poppins text-lg font-semibold">
             <div className="flex h-full w-20 flex-col justify-center break-words text-center">
