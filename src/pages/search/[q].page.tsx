@@ -17,15 +17,26 @@ const Search = () => {
     field: SortField;
     criteria: SortCriteria;
   }>({ field: "price", criteria: "asc" });
+  const [filters, setFilters] = useState<{
+    isNew?: Boolean;
+    isBusiness?: Boolean;
+    categoryId?: Number;
+    price?: { from: Number; to: Number };
+    fee?: { from: Number; to: Number };
+  }>();
 
-  const { data: searchProducts } = api.products.getSearchProducts.useQuery(
+  const { data: data } = api.products.getSearchProducts.useQuery(
     {
       text: router.query.q as string,
       field: sort.field,
       criteria: sort.criteria,
+      filters: filters,
     },
     { enabled: !!router.query.q }
   );
+
+  console.log(filters);
+  console.log(data?.products);
 
   const onOptionClick = (item: SortMenuItem) => {
     setSort({ field: item.field, criteria: item.criteria });
@@ -39,7 +50,11 @@ const Search = () => {
 
   return (
     <section className="container mx-auto mt-16 flex px-4 sm:px-0">
-      <CategoryList searchTerm={firstCharToCaps(router.query.q || "")} />
+      <CategoryList
+        searchTerm={firstCharToCaps(router.query.q || "")}
+        setFilters={setFilters}
+        productFilters={data?.productFilters}
+      />
       <div className="w-full">
         <div className="flex justify-end">
           <div className="mb-4 max-w-max">
@@ -47,7 +62,7 @@ const Search = () => {
           </div>
         </div>
         <ProductList
-          products={searchProducts || []}
+          products={data?.products || []}
           classes="md:grid-cols-[repeat(4,minmax(250px,_1fr))]"
         />
       </div>
