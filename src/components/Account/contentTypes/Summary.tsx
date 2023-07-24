@@ -7,8 +7,6 @@ import { api } from "~/utils/api";
 const Summary = () => {
   const { data: userDetails } = api.users.getUserDetails.useQuery();
 
-  console.log(userDetails);
-
   return (
     <div className="flex h-full w-[70%] flex-col justify-between bg-gray-300 p-5">
       <div className="pb-5 font-poppins text-3xl font-bold">Summary</div>

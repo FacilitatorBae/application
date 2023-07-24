@@ -22,8 +22,6 @@ const Second = () => {
 
   const { allCategories } = useCategories();
 
-  console.log(allCategories);
-
   const [parentId, setParentId] = useState(0);
 
   const isPickedLastCategory =

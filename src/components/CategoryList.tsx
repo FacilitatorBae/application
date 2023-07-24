@@ -1,65 +1,136 @@
 import { Checkbox, Input, Button } from "@material-tailwind/react";
+import { useState } from "react";
+import { api } from "~/utils/api";
 
-const mockCategory = [
-  {
-    type: "option",
-    title: "Condition",
-    children: [
-      { title: "Brand New", count: 3123 },
-      { title: "Used", count: 421 },
-    ],
-  },
-  {
-    type: "option",
-    title: "Category",
-    children: [
-      { title: "eSport", count: 125 },
-      { title: "Gaming", count: 125 },
-      { title: "Toys", count: 125 },
-      { title: "Kitchen", count: 125 },
-      { title: "Home", count: 125 },
-      { title: "Cars", count: 125 },
-    ],
-  },
-  {
-    type: "option",
-    title: "Location",
-    children: [
-      { title: "California", count: 125 },
-      { title: "Texas", count: 125 },
-      { title: "New York", count: 125 },
-      { title: "Florida", count: 125 },
-      { title: "Georgia", count: 125 },
-      { title: "Illinois", count: 125 },
-    ],
-  },
-];
+interface PriceFilters {
+  from?: number;
+  to?: number;
+}
+
+interface FeesFilters {
+  from?: number;
+  to?: number;
+}
+
+interface ProductFilters {
+  isNew?: boolean;
+  isBusiness?: boolean;
+  categoryId?: number;
+  price?: PriceFilters;
+  fee?: FeesFilters;
+}
 
 interface CategoryListProps {
   searchTerm: string;
+  productFiltersCount?: {
+    isNew?: { true?: number; false?: number };
+    isBusiness?: { true?: number; false?: number };
+    categoryId?: number;
+  }[];
+  setFilters: (productFilters?: ProductFilters) => void;
 }
 
-const CategoryList: React.FC<CategoryListProps> = ({ searchTerm }) => {
+const valueFormatter = (key: string, value: string) => {
+  switch (key) {
+    case "isNew":
+      return Boolean(value);
+    case "isBusiness":
+      return Boolean(value);
+    case "categoryId":
+      return Number(value);
+    default:
+      break;
+  }
+};
+
+const CategoryList: React.FC<CategoryListProps> = ({
+  searchTerm,
+  productFiltersCount,
+  setFilters,
+}) => {
+  const { data: categories } = api.categories.getAllCategories.useQuery();
+
+  const subtitleMapper = (title: string, subTitle: string) => {
+    switch (title) {
+      case "isNew":
+        return subTitle === "true" ? "Brand New" : "Used";
+      case "isBusiness":
+        return subTitle === "true" ? "Business" : "Individual";
+      case "categoryId":
+        return categories?.find((item) => item.id === Number(subTitle))?.name;
+      default:
+        break;
+    }
+  };
+
+  const titleMapper = (title: string) => {
+    switch (title) {
+      case "isNew":
+        return "Condition";
+      case "isBusiness":
+        return "Seller Type";
+      case "categoryId":
+        return "Category";
+      default:
+        break;
+    }
+  };
+
+  const [priceFilter, setPriceFilter] = useState<PriceFilters>({
+    from: undefined,
+    to: undefined,
+  });
+  const [feeFilter, setFeeFilter] = useState<FeesFilters>({
+    from: undefined,
+    to: undefined,
+  });
   return (
     <div className="flex h-full w-[25%] flex-col font-poppins">
       <div className="flex w-full flex-col">
         <div className="mb-5 w-full text-2xl">{searchTerm}</div>
-        {mockCategory.map((categ) => (
-          <div key={categ.title} className="flex flex-col pb-3">
-            <span className="text-lg font-medium">{categ.title}</span>
-            {categ.children?.map((child) => (
-              <div
-                key={child.title}
-                className="flex flex-row items-baseline font-light"
-              >
-                <span>{child.title}</span>
-                <span className="ml-1 text-xs text-gray-500">
-                  ({child.count})
-                </span>
-              </div>
-            ))}
-          </div>
-        ))}
+        {productFiltersCount?.map((categ) => {
+          const categoryTitle = Object.keys(categ)[0];
+          const subcategoriesTitlesAndValues = Object.values(categ)[0];
+          const subcategoriesTitles =
+            subcategoriesTitlesAndValues &&
+            Object.keys(subcategoriesTitlesAndValues);
+          return (
+            <div key={categoryTitle} className="flex flex-col pb-3">
+              <span className="text-lg font-medium">
+                {Object.keys(
+                  productFiltersCount.find((item) => item?.[categoryTitle])?.[
+                    categoryTitle
+                  ]
+                ).length
+                  ? titleMapper(categoryTitle)
+                  : null}
+              </span>
+              {subcategoriesTitles?.map((child: string) => {
+                return (
+                  <div
+                    key={Object.keys(child)[0]}
+                    className="flex flex-row items-baseline font-light"
+                  >
+                    <span
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setFilters((prev: ProductFilters) => ({
+                          ...prev,
+                          [categoryTitle]: valueFormatter(categoryTitle, child),
+                        }));
+                      }}
+                    >
+                      {categoryTitle && subtitleMapper(categoryTitle, child)}
+                    </span>
+                    <span className="ml-1 text-xs text-gray-500">
+                      ({subcategoriesTitlesAndValues[child]})
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
 
         <div className="flex w-full flex-col pb-3">
           <span className="text-lg font-medium">Price</span>
@@ -67,12 +138,34 @@ const CategoryList: React.FC<CategoryListProps> = ({ searchTerm }) => {
             <Input
               containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
               label="From"
+              onChange={(e) => {
+                setPriceFilter((prev: PriceFilters) => ({
+                  ...prev,
+                  from: Number(e.target.value),
+                }));
+              }}
             />
             <Input
               containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
               label="To"
+              onChange={(e) => {
+                setPriceFilter((prev: PriceFilters) => ({
+                  ...prev,
+                  to: Number(e.target.value),
+                }));
+              }}
             />
-            <Button className="ml-2 h-[30px] w-[30px] p-0">GO</Button>
+            <Button
+              className="ml-2 h-[30px] w-[30px] p-0"
+              onClick={() => {
+                setFilters((prev: ProductFilters) => ({
+                  ...prev,
+                  price: priceFilter,
+                }));
+              }}
+            >
+              GO
+            </Button>
           </div>
         </div>
         <div className="flex flex-col pb-3">
@@ -81,12 +174,34 @@ const CategoryList: React.FC<CategoryListProps> = ({ searchTerm }) => {
             <Input
               containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
               label="From"
+              onChange={(e) => {
+                setFeeFilter((prev: FeesFilters) => ({
+                  ...prev,
+                  from: Number(e.target.value),
+                }));
+              }}
             />
             <Input
               containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
               label="To"
+              onChange={(e) => {
+                setFeeFilter((prev: FeesFilters) => ({
+                  ...prev,
+                  to: Number(e.target.value),
+                }));
+              }}
             />
-            <Button className="ml-2 h-[30px] w-[30px] p-0">GO</Button>
+            <Button
+              onClick={() => {
+                setFilters((prev: ProductFilters) => ({
+                  ...prev,
+                  fee: feeFilter,
+                }));
+              }}
+              className="ml-2 h-[30px] w-[30px] p-0"
+            >
+              GO
+            </Button>
           </div>
         </div>
         <div className="flex w-full flex-col pb-3">

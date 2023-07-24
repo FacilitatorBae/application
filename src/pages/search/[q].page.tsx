@@ -11,18 +11,46 @@ import {
 } from "./utils";
 import { useState } from "react";
 
+interface PriceFilters {
+  from?: number;
+  to?: number;
+}
+
+interface FeesFilters {
+  from?: number;
+  to?: number;
+}
+
+interface ProductFilters {
+  isNew?: boolean;
+  isBusiness?: boolean;
+  categoryId?: number;
+  price?: PriceFilters;
+  fee?: FeesFilters;
+}
+
+const initialProductFilters = {
+  isNew: undefined,
+  isBusiness: undefined,
+  categoryId: undefined,
+  price: { from: undefined, to: undefined },
+  fee: { from: undefined, to: undefined },
+};
+
 const Search = () => {
   const router = useRouter<"/search/[q]">();
   const [sort, setSort] = useState<{
     field: SortField;
     criteria: SortCriteria;
   }>({ field: "price", criteria: "asc" });
+  const [filters, setFilters] = useState<ProductFilters>(initialProductFilters);
 
-  const { data: searchProducts } = api.products.getSearchProducts.useQuery(
+  const { data: data } = api.products.getSearchProducts.useQuery(
     {
       text: router.query.q as string,
       field: sort.field,
       criteria: sort.criteria,
+      filters: filters,
     },
     { enabled: !!router.query.q }
   );
@@ -39,7 +67,11 @@ const Search = () => {
 
   return (
     <section className="container mx-auto mt-16 flex px-4 sm:px-0">
-      <CategoryList searchTerm={firstCharToCaps(router.query.q || "")} />
+      <CategoryList
+        searchTerm={firstCharToCaps(router.query.q || "")}
+        setFilters={setFilters}
+        productFiltersCount={data?.productFiltersCount}
+      />
       <div className="w-full">
         <div className="flex justify-end">
           <div className="mb-4 max-w-max">
@@ -47,7 +79,7 @@ const Search = () => {
           </div>
         </div>
         <ProductList
-          products={searchProducts || []}
+          products={data?.products || []}
           classes="md:grid-cols-[repeat(4,minmax(250px,_1fr))]"
         />
       </div>
