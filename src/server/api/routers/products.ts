@@ -5,6 +5,7 @@ import {
 } from "~/server/api/trpc";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
+import { type Category } from "@prisma/client";
 
 // Define and use a default selection of fields to get type inference correctly
 const defaultProductSelect = Prisma.validator<Prisma.ProductSelect>()({
@@ -31,38 +32,42 @@ const defaultCategorySelect = Prisma.validator<Prisma.CategorySelect>()({
   deletedAt: true,
 });
 
-const findParentMost = (categArray, categoryData) => {
-  if (categoryData?.parentId) {
+interface ProductFiltersCount {
+  [key: string]: number | object;
+}
+
+const findParentMost = (
+  categArray: Category[],
+  categoryData: Category | undefined,
+  parentLimit: number
+): Category => {
+  if (categoryData?.parentId && categoryData.parentId !== parentLimit) {
+    if (categoryData.id === parentLimit) {
+      return categoryData;
+    }
     return findParentMost(
       categArray,
-      categArray.find((item) => item.id === categoryData?.parentId)
+      categArray.find((item: Category) => item.id === categoryData?.parentId),
+      parentLimit
     );
   } else return categoryData;
 };
 
-const findAllChildrenIds = (categArray, resultArray = [], id) => {
-  categArray.sort((a, b) => {
-    if (a.parentId === undefined || a.parentId < b.parentId) {
-      return -1;
-    }
-    if (a.parentId > b.parentId) {
-      return 1;
-    }
-    return 0;
-  });
+const findChildrenIds = (data: Category[], parentId: number) => {
+  const childrenIds: number[] = [];
 
-  console.log(resultArray);
+  for (const item of data) {
+    if (item.parentId === parentId) {
+      childrenIds.push(item.id);
+      childrenIds.push(...findChildrenIds(data, item.id));
+    }
+  }
 
-  categArray.forEach((item) => {
-    if (item.parentId && !resultArray.includes(item.parentId)) {
-      if (item.parentId === id) {
-        resultArray.push(item.id);
-      } else {
-        findAllChildrenIds(categArray, resultArray, item.id);
-      }
-    } else return;
-  });
-  return resultArray;
+  if (childrenIds.length === 0) {
+    childrenIds.push(parentId);
+  }
+
+  return childrenIds;
 };
 
 export const productsRouter = createTRPCRouter({
@@ -107,30 +112,25 @@ export const productsRouter = createTRPCRouter({
       let queryParams = {};
       input?.filters &&
         Object.keys(input.filters).forEach((key) => {
-          if (key === "price" || key === "fee") {
-            queryParams = {
-              ...queryParams,
-              [key]: {
-                gte: input.filters?.[key].from,
-                lte: input.filters?.[key].to,
-              },
-            };
-          } else if (key === "categoryId") {
-            console.log(
-              findAllChildrenIds(allCategories, [], 3).map((item) => ({
-                categoryId: item,
-              }))
-            );
-            queryParams = {
-              ...queryParams,
-              OR: findAllChildrenIds(
-                allCategories,
-                [],
-                input.filters?.[key]
-              ).map((item) => ({ categoryId: item })),
-            };
-          } else {
-            queryParams = { ...queryParams, [key]: input.filters?.[key] };
+          if (input.filters?.[key]) {
+            if (key === "price" || key === "fee") {
+              queryParams = {
+                ...queryParams,
+                [key]: {
+                  gte: input.filters?.[key].from,
+                  lte: input.filters?.[key].to,
+                },
+              };
+            } else if (key === "categoryId") {
+              queryParams = {
+                ...queryParams,
+                OR: findChildrenIds(allCategories, input.filters?.[key])?.map(
+                  (item) => ({ categoryId: item })
+                ),
+              };
+            } else {
+              queryParams = { ...queryParams, [key]: input.filters?.[key] };
+            }
           }
         });
 
@@ -151,46 +151,56 @@ export const productsRouter = createTRPCRouter({
 
       const filterFields = ["isNew", "isBusiness", "categoryId"];
 
-      const productFilters = filterFields.map((key) => {
-        let keyCount = {};
-        if (key === "isNew") {
-          const unique = [...new Set(products.map((item) => item.isNew))];
-          unique.forEach((item) => {
-            keyCount = {
-              ...keyCount,
-              [item]: products.filter((value) => value?.[key] === item).length,
-            };
-          });
-        }
-        if (key === "isBusiness") {
-          const unique = [...new Set(products.map((item) => item.isBusiness))];
-          unique.forEach((item) => {
-            keyCount = {
-              ...keyCount,
-              [item]: products.filter((value) => value?.[key] === item).length,
-            };
-          });
-        }
-        if (key === "categoryId") {
-          const productsWithParentMostCategories = products.map((item) =>
-            findParentMost(allCategories, item.category)
-          );
+      const productFiltersCount: ProductFiltersCount[] = filterFields.map(
+        (key) => {
+          let keyCount = {};
+          if (key === "isNew") {
+            const unique = [...new Set(products.map((item) => item.isNew))];
+            unique.forEach((item) => {
+              keyCount = {
+                ...keyCount,
+                [item]: products.filter((value) => value?.[key] === item)
+                  .length,
+              };
+            });
+          }
+          if (key === "isBusiness") {
+            const unique = [
+              ...new Set(products.map((item) => item.isBusiness)),
+            ];
+            unique.forEach((item) => {
+              keyCount = {
+                ...keyCount,
+                [item]: products.filter((value) => value?.[key] === item)
+                  .length,
+              };
+            });
+          }
+          if (key === "categoryId") {
+            const productsWithParentMostCategories = products.map((item) => {
+              return findParentMost(
+                allCategories,
+                item.category,
+                input.filters?.categoryId
+              );
+            });
 
-          const unique = [...new Set(productsWithParentMostCategories)];
+            const unique = [...new Set(productsWithParentMostCategories)];
 
-          unique.forEach((item) => {
-            keyCount = {
-              ...keyCount,
-              [item.id]: productsWithParentMostCategories.filter(
-                (value) => value?.id === item.id
-              ).length,
-            };
-          });
+            unique.forEach((item) => {
+              keyCount = {
+                ...keyCount,
+                [item.id]: productsWithParentMostCategories.filter(
+                  (value) => value?.id === item.id
+                ).length,
+              };
+            });
+          }
+          return { [key]: keyCount };
         }
-        return { [key]: keyCount };
-      });
+      );
 
-      return { products: products, productFilters: productFilters };
+      return { products: products, productFiltersCount: productFiltersCount };
     }),
   getProductById: publicProcedure
     .input(z.object({ id: z.string() }))

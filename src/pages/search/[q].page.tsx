@@ -11,19 +11,39 @@ import {
 } from "./utils";
 import { useState } from "react";
 
+interface PriceFilters {
+  from?: number;
+  to?: number;
+}
+
+interface FeesFilters {
+  from?: number;
+  to?: number;
+}
+
+interface ProductFilters {
+  isNew?: boolean;
+  isBusiness?: boolean;
+  categoryId?: number;
+  price?: PriceFilters;
+  fee?: FeesFilters;
+}
+
+const initialProductFilters = {
+  isNew: undefined,
+  isBusiness: undefined,
+  categoryId: undefined,
+  price: { from: undefined, to: undefined },
+  fee: { from: undefined, to: undefined },
+};
+
 const Search = () => {
   const router = useRouter<"/search/[q]">();
   const [sort, setSort] = useState<{
     field: SortField;
     criteria: SortCriteria;
   }>({ field: "price", criteria: "asc" });
-  const [filters, setFilters] = useState<{
-    isNew?: Boolean;
-    isBusiness?: Boolean;
-    categoryId?: Number;
-    price?: { from: Number; to: Number };
-    fee?: { from: Number; to: Number };
-  }>();
+  const [filters, setFilters] = useState<ProductFilters>(initialProductFilters);
 
   const { data: data } = api.products.getSearchProducts.useQuery(
     {
@@ -34,9 +54,6 @@ const Search = () => {
     },
     { enabled: !!router.query.q }
   );
-
-  console.log(filters);
-  console.log(data?.products);
 
   const onOptionClick = (item: SortMenuItem) => {
     setSort({ field: item.field, criteria: item.criteria });
@@ -53,7 +70,7 @@ const Search = () => {
       <CategoryList
         searchTerm={firstCharToCaps(router.query.q || "")}
         setFilters={setFilters}
-        productFilters={data?.productFilters}
+        productFiltersCount={data?.productFiltersCount}
       />
       <div className="w-full">
         <div className="flex justify-end">
