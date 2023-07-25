@@ -1,28 +1,19 @@
 import { useNewPost } from "~/hooks/useNewPost";
-import { useCategories } from "~/hooks/useCategories";
-import { First, Second, Third } from "./contentTypes";
+import { First, Second, Third, Fourth } from "./contentTypes";
 import { useEffect } from "react";
 import { api } from "~/utils/api";
 
 const Account = () => {
-  const { data: categories } = api.categories.getAllCategories.useQuery();
-
   const { activeStep: activeStep, resetNewPostData: resetNewPostData } =
     useNewPost();
-
-  const { allCategories, setCategories } = useCategories();
-
-  useEffect(() => {
-    if (!allCategories?.length) {
-      categories && setCategories(categories);
-    }
-  }, [categories, allCategories]);
 
   useEffect(() => {
     return () => {
       resetNewPostData();
     };
   }, []);
+
+  api.categories.getAllCategories.useQuery();
 
   const contentMapping = () => {
     switch (activeStep) {
@@ -32,6 +23,8 @@ const Account = () => {
         return <Second />;
       case 3:
         return <Third />;
+      case 4:
+        return <Fourth />;
       default:
         break;
     }
@@ -42,9 +35,11 @@ const Account = () => {
       <div className="pb-16 font-poppins text-5xl font-bold">
         What do you want to sell?
       </div>
-      <div className="pb-5 font-poppins text-sm font-thin">
-        Step {activeStep} / 3
-      </div>
+      {activeStep >= 1 && activeStep <= 3 ? (
+        <div className="pb-5 font-poppins text-sm font-thin">
+          Step {activeStep} / 3
+        </div>
+      ) : null}
       {contentMapping()}
     </section>
   );

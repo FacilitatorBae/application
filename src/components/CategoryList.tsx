@@ -1,6 +1,6 @@
 import { Checkbox, Input, Button } from "@material-tailwind/react";
+import { type Category } from "@prisma/client";
 import { useState } from "react";
-import { api } from "~/utils/api";
 
 interface PriceFilters {
   from?: number;
@@ -21,6 +21,7 @@ interface ProductFilters {
 }
 
 interface CategoryListProps {
+  categories?: Category[];
   searchTerm: string;
   productFiltersCount?: {
     isNew?: { true?: number; false?: number };
@@ -45,11 +46,10 @@ const valueFormatter = (key: string, value: string) => {
 
 const CategoryList: React.FC<CategoryListProps> = ({
   searchTerm,
+  categories,
   productFiltersCount,
   setFilters,
 }) => {
-  const { data: categories } = api.categories.getAllCategories.useQuery();
-
   const subtitleMapper = (title: string, subTitle: string) => {
     switch (title) {
       case "isNew":
@@ -84,6 +84,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
     from: undefined,
     to: undefined,
   });
+
   return (
     <div className="flex h-full w-[25%] flex-col font-poppins">
       <div className="flex w-full flex-col">
@@ -144,6 +145,15 @@ const CategoryList: React.FC<CategoryListProps> = ({
                   from: Number(e.target.value),
                 }));
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  setFilters((prev: ProductFilters) => ({
+                    ...prev,
+                    price: priceFilter,
+                  }));
+                }
+              }}
             />
             <Input
               containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
@@ -153,6 +163,15 @@ const CategoryList: React.FC<CategoryListProps> = ({
                   ...prev,
                   to: Number(e.target.value),
                 }));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  setFilters((prev: ProductFilters) => ({
+                    ...prev,
+                    price: priceFilter,
+                  }));
+                }
               }}
             />
             <Button
@@ -180,6 +199,15 @@ const CategoryList: React.FC<CategoryListProps> = ({
                   from: Number(e.target.value),
                 }));
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  setFilters((prev: ProductFilters) => ({
+                    ...prev,
+                    fee: feeFilter,
+                  }));
+                }
+              }}
             />
             <Input
               containerProps={{ className: "min-w-[72px] max-w-[80px]" }}
@@ -189,6 +217,15 @@ const CategoryList: React.FC<CategoryListProps> = ({
                   ...prev,
                   to: Number(e.target.value),
                 }));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  setFilters((prev: ProductFilters) => ({
+                    ...prev,
+                    fee: feeFilter,
+                  }));
+                }
               }}
             />
             <Button

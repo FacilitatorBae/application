@@ -53,7 +53,7 @@ const Header = () => {
         <div className="container mx-auto flex items-center justify-between py-4">
           <div className="flex w-1/4 justify-start">
             <Link href="/">
-              <span className="font-comfortaa text-2xl">VENDio</span>
+              <span className="font-comfortaa text-2xl">vendr</span>
             </Link>
           </div>
           <div className="flex-1 px-7">
