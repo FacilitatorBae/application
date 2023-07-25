@@ -22,6 +22,7 @@ interface ContextState {
       fees?: string;
       description?: string;
       pictures?: string[];
+      id?: string;
     };
     updateNewPostDetails: (key: string, value: string | string[]) => void;
     resetNewPostData: () => void;

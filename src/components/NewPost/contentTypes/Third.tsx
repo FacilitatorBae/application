@@ -6,7 +6,9 @@ import {
   Option,
   Textarea,
   Button,
+  Spinner,
 } from "@material-tailwind/react";
+import { useEffect } from "react";
 import { BiChevronLeft, BiCamera } from "react-icons/bi";
 import { useNewPost } from "~/hooks/useNewPost";
 import { useRef } from "react";
@@ -18,9 +20,23 @@ const Third = () => {
     newPostDetails,
     prev: prevStep,
     pickedCategories,
+    next: nextStep,
+    activeStep,
   } = useNewPost();
 
-  const { mutate } = api.products.newProduct.useMutation();
+  const {
+    mutate,
+    isLoading,
+    isSuccess,
+    data: postedData,
+  } = api.products.newProduct.useMutation();
+
+  useEffect(() => {
+    if (activeStep === 3 && isSuccess && postedData.id) {
+      updateNewPostDetails("id", postedData.id.toString());
+      nextStep();
+    }
+  }, [isSuccess, postedData, activeStep]);
 
   const hiddenFileInput = useRef(null);
 
@@ -128,13 +144,15 @@ const Third = () => {
               </div>
             </div>
             <Button
+              className="flex items-center justify-center"
               disabled={
                 !newPostDetails?.description ||
                 !newPostDetails?.pictures ||
                 !newPostDetails?.fees ||
                 !newPostDetails?.price ||
                 !newPostDetails?.title ||
-                !newPostDetails?.condition
+                !newPostDetails?.condition ||
+                isLoading
               }
               onClick={() => {
                 mutate({
@@ -154,6 +172,7 @@ const Third = () => {
               }}
             >
               Publish
+              {isLoading && <Spinner className="absolute h-5 w-5" />}
             </Button>
           </div>
         </div>

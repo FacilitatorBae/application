@@ -6,6 +6,7 @@ import {
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
 import { type Category } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 
 // Define and use a default selection of fields to get type inference correctly
 const defaultProductSelect = Prisma.validator<Prisma.ProductSelect>()({

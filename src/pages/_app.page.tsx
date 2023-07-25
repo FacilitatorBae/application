@@ -37,7 +37,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           className={`${poppins.variable} ${comfortaa.variable} ${inter.variable} min-h-screen bg-[#EBEBEB]`}
         >
           <Head>
-            <title>VENDio</title>
+            <title>vendr</title>
           </Head>
           <Header />
           <Component {...pageProps} />

@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { useNewPost } from "~/hooks/useNewPost";
-import { useCategories } from "~/hooks/useCategories";
+import { api } from "~/utils/api";
 
 const Second = () => {
   const {
@@ -20,7 +20,7 @@ const Second = () => {
     resetPickedCategories,
   } = useNewPost();
 
-  const { allCategories } = useCategories();
+  const { data: allCategories } = api.categories.getAllCategories.useQuery();
 
   const [parentId, setParentId] = useState(0);
 
