@@ -3,13 +3,15 @@ import { Button } from "@material-tailwind/react";
 import { BiShareAlt } from "react-icons/bi";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useFavorites } from "~/hooks/useFavorites";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { type Product } from "@prisma/client";
 import { api } from "~/utils/api";
+import FacilitateModal from "./FacilitateModal";
 
 interface ProductListProps {
   product: Product;
 }
+type ItemIdCooke = string | null;
 
 const Item: React.FC<ProductListProps> = ({ product }) => {
   const {
@@ -20,10 +22,32 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
 
   const { id, title, description, pictures, price, fee, isBusiness, isNew } =
     product;
-
   const { data: categoryNest } = api.categories.getCategoryNestById.useQuery({
     id: product.categoryId?.toString(),
   });
+
+  const [isFacilitateModalOpen, setIsFacilitateModalOpen] = useState(false);
+  const [itemIdCookie, setItemIdCookie] = useState<ItemIdCooke>();
+
+  const handleFacilitateModalOpen = () =>
+    setIsFacilitateModalOpen((cur) => !cur);
+
+  const getCookie = (name: string) => {
+    const cookieStr = document.cookie;
+    const cookies = cookieStr.split(";").map((cookie) => cookie.trim());
+    for (const cookie of cookies) {
+      if (cookie.startsWith(`${name}=`)) {
+        return decodeURIComponent(cookie.substring(name.length + 1));
+      }
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    if (id) {
+      setItemIdCookie(getCookie(`vendr-itemId[${id}]`));
+    }
+  }, [id]);
 
   const categoriesComponent = categoryNest?.map((item) => {
     const isLastItem = categoryNest.length === categoryNest.indexOf(item) + 1;
@@ -129,7 +153,10 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
           </span>
           <div className="pt-5">
             <Button className="rounded-md bg-blue-brand">BUY</Button>
-            <Button className="ml-5 rounded-md bg-blue-100 text-blue-brand">
+            <Button
+              onClick={handleFacilitateModalOpen}
+              className="ml-5 rounded-md bg-blue-100 text-blue-brand"
+            >
               FACILITATE
             </Button>
           </div>
@@ -138,6 +165,11 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
           </div>
         </div>
       </div>
+      <FacilitateModal
+        open={isFacilitateModalOpen}
+        productId={id}
+        handleOpen={handleFacilitateModalOpen}
+      />
     </section>
   );
 };
