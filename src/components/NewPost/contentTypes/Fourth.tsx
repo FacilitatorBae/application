@@ -1,18 +1,5 @@
-import {
-  Input,
-  IconButton,
-  Breadcrumbs,
-  Select,
-  Option,
-  Textarea,
-  Button,
-  Spinner,
-} from "@material-tailwind/react";
 import Link from "next/link";
-import { BiChevronLeft, BiCamera } from "react-icons/bi";
 import { useNewPost } from "~/hooks/useNewPost";
-import { useRef } from "react";
-import { api } from "~/utils/api";
 
 const Fourth = () => {
   const { newPostDetails } = useNewPost();
