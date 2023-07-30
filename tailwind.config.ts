@@ -13,7 +13,7 @@ export default withMT({
         },
       },
       animation: {
-        progressBar: "progressBar 3s linear forwards",
+        progressBar: "progressBar 4s linear forwards",
       },
       fontFamily: {
         poppins: "var(--font-poppins)",
