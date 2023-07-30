@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { type FakeFooter } from "~/types";
+import { useToast } from "~/hooks/useToast ";
 
 const fakeFooterData: FakeFooter[] = [
   {
@@ -47,12 +48,20 @@ const fakeFooterRightData: FakeFooter[] = [
 ];
 
 const Footer = () => {
+  const toast = useToast();
+
   const footerItems = fakeFooterData.map((item) => {
     const subtitles = item.subtitles.map((subtitle) => (
       <span key={subtitle.label}>{subtitle.label}</span>
     ));
     return (
-      <div key={item.title} className="mt-[40px] flex flex-col">
+      <div
+        key={item.title}
+        onClick={() => {
+          toast.success("hola");
+        }}
+        className="mt-[40px] flex flex-col"
+      >
         <span className="font-poppins text-base font-thin text-gray-300 ">
           {item.title}
         </span>

@@ -6,6 +6,15 @@ export default withMT({
   darkMode: "class",
   theme: {
     extend: {
+      keyframes: {
+        progressBar: {
+          "1%": { width: "100%" },
+          "100%": { width: "0%" },
+        },
+      },
+      animation: {
+        progressBar: "progressBar 3s linear forwards",
+      },
       fontFamily: {
         poppins: "var(--font-poppins)",
         comfortaa: "var(--font-comfortaa)",

@@ -1,4 +1,4 @@
-import { type Product, type Category, type Address } from "@prisma/client";
+import { type Product, type Category } from "@prisma/client";
 import React, { type PropsWithChildren, createContext, useState } from "react";
 
 interface ContextState {
