@@ -7,11 +7,28 @@ import { useEffect, useMemo, useState } from "react";
 import { type Product } from "@prisma/client";
 import { api } from "~/utils/api";
 import FacilitateModal from "./FacilitateModal";
+import BuyModal from "./BuyModal";
+import { withAuthentication } from "~/hocs/withAuthentication";
+import AuthDialog from "./AuthDialog";
 
 interface ProductListProps {
   product: Product;
 }
 type ItemIdCooke = string | null;
+
+const AuthBuyModal = withAuthentication(BuyModal, AuthDialog);
+const AuthFacilitateModal = withAuthentication(FacilitateModal, AuthDialog);
+
+const getCookie = (name: string) => {
+  const cookieStr = document.cookie;
+  const cookies = cookieStr.split(";").map((cookie) => cookie.trim());
+  for (const cookie of cookies) {
+    if (cookie.startsWith(`${name}=`)) {
+      return decodeURIComponent(cookie.substring(name.length + 1));
+    }
+  }
+  return null;
+};
 
 const Item: React.FC<ProductListProps> = ({ product }) => {
   const {
@@ -27,21 +44,13 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
   });
 
   const [isFacilitateModalOpen, setIsFacilitateModalOpen] = useState(false);
+  const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   const [itemIdCookie, setItemIdCookie] = useState<ItemIdCooke>();
+
+  const handleBuyModalOpen = () => setIsBuyModalOpen((cur) => !cur);
 
   const handleFacilitateModalOpen = () =>
     setIsFacilitateModalOpen((cur) => !cur);
-
-  const getCookie = (name: string) => {
-    const cookieStr = document.cookie;
-    const cookies = cookieStr.split(";").map((cookie) => cookie.trim());
-    for (const cookie of cookies) {
-      if (cookie.startsWith(`${name}=`)) {
-        return decodeURIComponent(cookie.substring(name.length + 1));
-      }
-    }
-    return null;
-  };
 
   useEffect(() => {
     if (id) {
@@ -152,7 +161,12 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
             Fee: ${fee}
           </span>
           <div className="pt-5">
-            <Button className="rounded-md bg-blue-brand">BUY</Button>
+            <Button
+              onClick={handleBuyModalOpen}
+              className="rounded-md bg-blue-brand"
+            >
+              BUY
+            </Button>
             <Button
               onClick={handleFacilitateModalOpen}
               className="ml-5 rounded-md bg-blue-100 text-blue-brand"
@@ -165,7 +179,12 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
           </div>
         </div>
       </div>
-      <FacilitateModal
+      <AuthBuyModal
+        open={isBuyModalOpen}
+        productId={id}
+        handleOpen={handleBuyModalOpen}
+      />
+      <AuthFacilitateModal
         open={isFacilitateModalOpen}
         productId={id}
         handleOpen={handleFacilitateModalOpen}
