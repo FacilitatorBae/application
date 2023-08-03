@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <section className="container mx-auto mt-16 min-h-[60vh] px-4 sm:px-0">
       {isLoading ? (
-        <div className="flex h-full min-h-[60vh] w-full items-center justify-center ">
+        <div className="flex h-full min-h-[60vh] w-full items-center justify-center">
           <Spinner className="h-16 w-16" />
         </div>
       ) : (

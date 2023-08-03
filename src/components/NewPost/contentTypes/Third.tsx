@@ -13,6 +13,7 @@ import { BiChevronLeft, BiCamera } from "react-icons/bi";
 import { useNewPost } from "~/hooks/useNewPost";
 import { useRef } from "react";
 import { api } from "~/utils/api";
+import { useToast } from "~/hooks/useToast ";
 
 const Third = () => {
   const {
@@ -23,20 +24,31 @@ const Third = () => {
     next: nextStep,
     activeStep,
   } = useNewPost();
+  const toast = useToast();
 
   const {
     mutate,
     isLoading,
     isSuccess,
+    isError,
     data: postedData,
   } = api.products.newProduct.useMutation();
 
   useEffect(() => {
     if (activeStep === 3 && isSuccess && postedData.id) {
       updateNewPostDetails("id", postedData.id.toString());
+      toast.success(`Item posted successfully with ID ${postedData.id}`);
       nextStep();
     }
   }, [isSuccess, postedData, activeStep]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(
+        `There was an error while trying to post the item. Try again later.`
+      );
+    }
+  }, [isError]);
 
   const hiddenFileInput = useRef(null);
 

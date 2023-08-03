@@ -25,7 +25,6 @@ const FacilitateModal: React.FC<FacilitateModalProps> = ({
   useEffect(() => {
     if (window?.location?.origin) {
       setBaseUrl(window?.location?.href);
-      console.log(window.location);
     }
   }, []);
 

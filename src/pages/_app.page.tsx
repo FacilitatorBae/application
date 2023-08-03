@@ -1,6 +1,6 @@
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
-import { Poppins, Comfortaa, Inter } from "next/font/google";
+import { Poppins, Comfortaa, Inter, Montserrat } from "next/font/google";
 import "~/styles/globals.css";
 import { Footer, Header, Favorites } from "~/components";
 import { SessionProvider } from "next-auth/react";
@@ -27,6 +27,12 @@ const comfortaa = Comfortaa({
   variable: "--font-comfortaa",
 });
 
+const montserrat = Montserrat({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+});
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -36,7 +42,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <AppContext>
         <ToastContext>
           <main
-            className={`${poppins.variable} ${comfortaa.variable} ${inter.variable} min-h-screen bg-[#EBEBEB]`}
+            className={`${poppins.variable} ${comfortaa.variable} ${inter.variable} ${montserrat.variable} min-h-screen bg-[#EBEBEB]`}
           >
             <Head>
               <title>vendr</title>

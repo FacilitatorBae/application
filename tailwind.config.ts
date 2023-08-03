@@ -19,6 +19,7 @@ export default withMT({
         poppins: "var(--font-poppins)",
         comfortaa: "var(--font-comfortaa)",
         inter: "var(--font-inter)",
+        montserrat: "var(--font-montserrat)",
       },
       colors: {
         "blue-brand": "#0071BD",

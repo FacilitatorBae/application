@@ -55,13 +55,7 @@ const Footer = () => {
       <span key={subtitle.label}>{subtitle.label}</span>
     ));
     return (
-      <div
-        key={item.title}
-        onClick={() => {
-          toast.success("hola");
-        }}
-        className="mt-[40px] flex flex-col"
-      >
+      <div key={item.title} className="mt-[40px] flex flex-col">
         <span className="font-poppins text-base font-thin text-gray-300 ">
           {item.title}
         </span>
