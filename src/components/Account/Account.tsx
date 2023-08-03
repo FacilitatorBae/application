@@ -1,4 +1,4 @@
-import { Card, List, ListItem } from "@material-tailwind/react";
+import { Card, List, ListItem, Spinner } from "@material-tailwind/react";
 import { useState } from "react";
 import { Summary, Sales, Comms, Purchases, Settings } from "./contentTypes";
 import { api } from "~/utils/api";
@@ -6,7 +6,7 @@ import { api } from "~/utils/api";
 const Account = () => {
   const [selectedListItem, setSelectedListItem] = useState("Summary");
 
-  const { data: userDetails } = api.users.getUserDetails.useQuery();
+  const { data: userDetails, isLoading } = api.users.getUserDetails.useQuery();
 
   const listMapping = () => {
     switch (selectedListItem) {
@@ -25,7 +25,11 @@ const Account = () => {
     }
   };
 
-  return (
+  return isLoading ? (
+    <div className="flex h-full min-h-[60vh] w-full items-center justify-center">
+      <Spinner className="h-16 w-16" />
+    </div>
+  ) : (
     <section className="container mx-auto mt-16 px-4 sm:px-0">
       <div className="pb-16 font-poppins text-5xl font-bold">
         {userDetails?.name}

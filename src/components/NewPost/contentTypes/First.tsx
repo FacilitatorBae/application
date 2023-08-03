@@ -17,7 +17,7 @@ const First = () => {
               updateNewPostDetails("title", e.target.value);
             }}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === "Enter" && newPostDetails.title) {
                 e.preventDefault();
                 nextStep();
               }
@@ -25,8 +25,11 @@ const First = () => {
             value={newPostDetails.title}
           />
           <IconButton
+            disabled={!newPostDetails.title}
             onClick={() => {
-              nextStep();
+              if (newPostDetails.title) {
+                nextStep();
+              }
             }}
             className="rounded-full"
           >

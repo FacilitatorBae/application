@@ -6,10 +6,20 @@ export default withMT({
   darkMode: "class",
   theme: {
     extend: {
+      keyframes: {
+        progressBar: {
+          "1%": { width: "100%" },
+          "100%": { width: "0%" },
+        },
+      },
+      animation: {
+        progressBar: "progressBar 4s linear forwards",
+      },
       fontFamily: {
         poppins: "var(--font-poppins)",
         comfortaa: "var(--font-comfortaa)",
         inter: "var(--font-inter)",
+        montserrat: "var(--font-montserrat)",
       },
       colors: {
         "blue-brand": "#0071BD",

@@ -13,6 +13,7 @@ import { useFavorites } from "~/hooks/useFavorites";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import LoginModal from "./LoginModal";
+import { useNewPost } from "~/hooks/useNewPost";
 
 const Header = () => {
   const { status } = useSession();
@@ -23,6 +24,7 @@ const Header = () => {
   const handleLoginModalOpen = () => setIsLoginModalOpen((cur) => !cur);
 
   const { items, togglePanel } = useFavorites();
+  const { resetNewPostData } = useNewPost();
 
   useEffect(() => {
     searchParams && setSearchValue(searchParams);
@@ -44,7 +46,12 @@ const Header = () => {
       <div className="bg-blue-brand p-2 font-inter text-xs text-white">
         <div className="container mx-auto flex justify-end">
           <span>Become a Partner</span>
-          <Link href="/newPost">
+          <Link
+            onClick={() => {
+              resetNewPostData();
+            }}
+            href="/newPost"
+          >
             <span className="cursor-pointer pl-4">Sell your Products</span>
           </Link>
         </div>
@@ -53,7 +60,7 @@ const Header = () => {
         <div className="container mx-auto flex items-center justify-between py-4">
           <div className="flex w-1/4 justify-start">
             <Link href="/">
-              <span className="font-comfortaa text-2xl">vendr</span>
+              <span className="font-montserrat text-3xl">vendr</span>
             </Link>
           </div>
           <div className="flex-1 px-7">
