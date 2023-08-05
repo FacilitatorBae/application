@@ -5,29 +5,21 @@ import { useRouter } from "next/router";
 
 interface BuyModalProps {
   open: boolean;
-  productId: number;
+  itemIdCookie: string;
   handleOpen: () => void;
 }
-const BuyModal: React.FC<BuyModalProps> = ({ open, productId, handleOpen }) => {
-  const [baseUrl, setBaseUrl] = useState("");
+const BuyModal: React.FC<BuyModalProps> = ({
+  open,
+  itemIdCookie,
+  handleOpen,
+}) => {
+  const { data: detailsByToken, isLoading } =
+    api.uuidTokens.getDetailsByToken.useQuery({
+      token: itemIdCookie,
+    });
 
-  const {
-    mutate,
-    data: postedData,
-    isSuccess,
-    isLoading,
-  } = api.uuidTokens.newUuiToken.useMutation();
-
-  useEffect(() => {
-    if (window?.location?.origin) {
-      setBaseUrl(window?.location?.href);
-      console.log(window.location);
-    }
-  }, []);
-
-  const handleOnGenerate = () => {
-    mutate({ productId: productId });
-  };
+  console.log(detailsByToken);
+  console.log(itemIdCookie);
 
   return (
     <Dialog
@@ -37,45 +29,36 @@ const BuyModal: React.FC<BuyModalProps> = ({ open, productId, handleOpen }) => {
       className="bg-transparent shadow-none"
     >
       <div className="inline-block w-full transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle">
-        <div className="mb-4 text-center">
-          <h3 className="text-2xl leading-6 text-gray-900">BUYBUYBUYBUYB</h3>
-        </div>
-        <div className="mt-4 text-[12px]">
-          <p>
-            1) Referral links will expire after 7 calendar days or when the item
-            is sold
-          </p>
-          <p>
-            2) Item may be sold by other person while you're trying to sell it
-          </p>
-          <p>
-            3) Buyer will have to buy the item through your link to it earn the
-            commission
-          </p>
-        </div>
-        <div className="mflex-row flex h-[40px] max-h-max w-[100%] items-center justify-between pt-5">
-          <Input
-            containerProps={{
-              className: "min-w-[72px] min-h-[40px] max-w-[65%]",
-            }}
-            label="Link"
-            type="text"
-            value={postedData?.token && `${baseUrl}?uuid=${postedData?.token}`}
-          />
-
-          <div className="h-full min-h-[40px] w-[40%]">
+        {isLoading && (
+          <div className="absolute bottom-0 left-0 right-0 top-0 z-[999] flex items-center justify-center bg-white">
+            <Spinner className="absolute h-10 w-10 p-0" />
+          </div>
+        )}
+        <>
+          <div className="mb-4 text-center">
+            <h3 className="text-2xl leading-6 text-gray-900">Buy</h3>
+          </div>
+          {detailsByToken ? (
+            <div className="mt-4 text-center text-xl">
+              <p>You've been referred by {detailsByToken?.[0]?.user?.name}</p>
+              <p className="text-sm">Is there an error? Click here</p>
+            </div>
+          ) : (
+            <div className="mt-4 text-center text-xl">
+              <p className="text-sm">
+                Were you referred by someone? Click here
+              </p>
+            </div>
+          )}
+          <div className="flex h-[40px] max-h-max w-[100%] flex-row items-center justify-center pt-5">
             <Button
-              onClick={handleOnGenerate}
-              className="ml-2 flex h-[40px] w-full items-center justify-center p-0"
+              // onClick={handleOnGenerate}
+              className="ml-2 flex h-[40px] w-[40%] items-center justify-center p-0"
             >
-              {isLoading ? (
-                <Spinner className="absolute h-5 w-5 p-0" />
-              ) : (
-                "Generate"
-              )}
+              Checkout
             </Button>
           </div>
-        </div>
+        </>
       </div>
     </Dialog>
   );

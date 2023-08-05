@@ -181,7 +181,7 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
       </div>
       <AuthBuyModal
         open={isBuyModalOpen}
-        productId={id}
+        itemIdCookie={itemIdCookie}
         handleOpen={handleBuyModalOpen}
       />
       <AuthFacilitateModal

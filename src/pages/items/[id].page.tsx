@@ -36,12 +36,14 @@ export async function getServerSideProps(
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() + 7);
 
-  res.setHeader(
-    "Set-Cookie",
-    `vendr-itemId[${query.id}]=${encodeURIComponent(
-      query.uuid
-    )}; Expires=${expirationDate.toUTCString()}; Path=/`
-  );
+  if (query.uuid) {
+    res.setHeader(
+      "Set-Cookie",
+      `vendr-itemId[${query.id}]=${encodeURIComponent(
+        query.uuid
+      )}; Expires=${expirationDate.toUTCString()}; Path=/`
+    );
+  }
 
   /*
    * Prefetching the `products.getProductById` query.
