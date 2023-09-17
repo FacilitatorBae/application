@@ -1,13 +1,13 @@
 import Image from "next/image";
-import { Button } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import { BiShareAlt } from "react-icons/bi";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useFavorites } from "~/hooks/useFavorites";
 import { useEffect, useMemo, useState } from "react";
 import { type Product } from "@prisma/client";
 import { api } from "~/utils/api";
-import FacilitateModal from "./FacilitateModal";
-import BuyModal from "./BuyModal";
+import FacilitateModal from "./Modals/FacilitateModal";
+import BuyModal from "./Modals/BuyModal";
 import { withAuthentication } from "~/hocs/withAuthentication";
 import AuthDialog from "./AuthDialog";
 
@@ -37,11 +37,21 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
     remove: removeFavorite,
   } = useFavorites();
 
-  const { id, title, description, pictures, price, fee, isBusiness, isNew } =
-    product;
-  const { data: categoryNest } = api.categories.getCategoryNestById.useQuery({
-    id: product.categoryId?.toString(),
-  });
+  const {
+    id,
+    title,
+    description,
+    pictures,
+    price,
+    fee,
+    isBusiness,
+    isNew,
+    isSold,
+  } = product;
+  const { data: categoryNest, isLoading } =
+    api.categories.getCategoryNestById.useQuery({
+      id: product.categoryId?.toString(),
+    });
 
   const [isFacilitateModalOpen, setIsFacilitateModalOpen] = useState(false);
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
@@ -79,7 +89,11 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
   const condition = isNew ? "Brand New" : "Used";
   const sellerCategory = isBusiness ? "Business" : "Individual";
 
-  return (
+  return isLoading ? (
+    <div className="flex h-full min-h-[60vh] w-full items-center justify-center">
+      <Spinner className="absolute h-16 w-16 p-0" />
+    </div>
+  ) : (
     <section className="container mx-auto my-16 px-4 font-poppins sm:px-0">
       <div className="mb-6 h-[20px] w-full">{categoriesComponent}</div>
       <div className="flex w-full justify-between">
@@ -160,20 +174,24 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
           <span className="text-2xl font-medium text-green-800">
             Fee: ${fee}
           </span>
-          <div className="pt-5">
-            <Button
-              onClick={handleBuyModalOpen}
-              className="rounded-md bg-blue-brand"
-            >
-              BUY
-            </Button>
-            <Button
-              onClick={handleFacilitateModalOpen}
-              className="ml-5 rounded-md bg-blue-100 text-blue-brand"
-            >
-              FACILITATE
-            </Button>
-          </div>
+          {isSold ? (
+            <div className="pt-5 text-red-800">Sold</div>
+          ) : (
+            <div className="pt-5">
+              <Button
+                onClick={handleBuyModalOpen}
+                className="rounded-md bg-blue-brand"
+              >
+                BUY
+              </Button>
+              <Button
+                onClick={handleFacilitateModalOpen}
+                className="ml-5 rounded-md bg-blue-100 text-blue-brand"
+              >
+                FACILITATE
+              </Button>
+            </div>
+          )}
           <div className="break-all pt-10">
             <span>{description}</span>
           </div>

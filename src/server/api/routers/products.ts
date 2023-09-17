@@ -15,6 +15,7 @@ const defaultProductSelect = Prisma.validator<Prisma.ProductSelect>()({
   isNew: true,
   isBusiness: true,
   isHot: true,
+  isSold: true,
   pictures: true,
   price: true,
   fee: true,
@@ -74,6 +75,9 @@ export const productsRouter = createTRPCRouter({
   getAllProducts: publicProcedure.query(async ({ ctx }) => {
     const products = await ctx.prisma.product.findMany({
       select: defaultProductSelect,
+      where: {
+        isSold: false,
+      },
     });
     return products;
   }),
@@ -222,7 +226,6 @@ export const productsRouter = createTRPCRouter({
         pictures: z.string(),
         price: z.string(),
         fee: z.string(),
-        owner: z.string(),
         categoryId: z.number(),
       })
     )
@@ -237,7 +240,7 @@ export const productsRouter = createTRPCRouter({
           pictures: input.pictures,
           price: Number(input.price),
           fee: Number(input.fee),
-          owner: input.owner,
+          owner: ctx.session.user.id,
           categoryId: input.categoryId,
         },
       });

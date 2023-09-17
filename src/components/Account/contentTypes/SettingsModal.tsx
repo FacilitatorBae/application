@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Dialog, Input, Spinner } from "@material-tailwind/react";
 import { useState } from "react";
 import { type RouterInputs, api } from "~/utils/api";
-import { useToast } from "~/hooks/useToast ";
+import { useToast } from "~/hooks/useToast";
 
 type UserAddress = RouterInputs["users"]["updateUserAddress"];
 

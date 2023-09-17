@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
-import Item from "../../components/Item";
+import Checkout from "../../../../components/Checkout";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import type { GetServerSidePropsContext } from "next";
 import superjson from "superjson";
@@ -18,7 +18,7 @@ export default function Post() {
     return null;
   }
 
-  return <Item product={data} />;
+  return <Checkout product={data} />;
 }
 
 export async function getServerSideProps(
@@ -30,20 +30,6 @@ export async function getServerSideProps(
     transformer: superjson,
   });
   const id = context.params?.id as string;
-
-  const { res, query } = context;
-
-  const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 7);
-
-  if (query.uuid) {
-    res.setHeader(
-      "Set-Cookie",
-      `vendr-itemId[${query.id}]=${encodeURIComponent(
-        query.uuid
-      )}; Expires=${expirationDate.toUTCString()}; Path=/`
-    );
-  }
 
   /*
    * Prefetching the `products.getProductById` query.

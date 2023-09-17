@@ -1,85 +1,61 @@
 import Grid from "~/components/Grid";
+import { useState, useEffect } from "react";
+import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import { Spinner } from "@material-tailwind/react";
 
 const columnDefs = [
   { field: "id", width: 5, headerName: "Id" },
-  { field: "item", width: 50, headerName: "Item", withAvatar: true },
+  { field: "item", width: 50, headerName: "Item" },
   { field: "amount", width: 150, headerName: "Amount" },
   { field: "fees", width: 160, headerName: "Fees" },
   { field: "status", width: 160, headerName: "Status" },
-  { field: "date", width: 5, headerName: "Date" },
+  { field: "creationDate", width: 5, headerName: "Creation Date" },
+  { field: "updateDate", width: 5, headerName: "Update Date" },
+  { field: "buyer", width: 5, headerName: "Buyer" },
+  { field: "seller", width: 5, headerName: "Seller" },
 ];
-const rowData = [
-  {
-    item: "bike",
-    itemAvatar:
-      "https://media.wired.com/photos/63e569c9de59d567d5d7c66d/2:3/w_1200,h_1800,c_limit/Ride1Up-Cafe-Cruiser-Featured-Gear.jpg",
-    fees: "412",
-    amount: "4124142",
-    status: "pending",
-    date: "17/2/2020",
-    id: 1,
-  },
-  {
-    item: "bike",
-    fees: "412",
-    amount: "4124142",
-    status: "pending",
-    date: "17/2/2020",
-    id: 1,
-  },
-  {
-    item: "bike",
-    fees: "412",
-    amount: "4124142",
-    status: "pending",
-    date: "17/2/2020",
-    id: 1,
-  },
-  {
-    item: "bike",
-    fees: "412",
-    amount: "4124142",
-    status: "pending",
-    date: "17/2/2020",
-    id: 1,
-  },
-  {
-    item: "bike",
-    fees: "412",
-    amount: "4124142",
-    status: "pending",
-    date: "17/2/2020",
-    id: 1,
-  },
-  {
-    item: "phone",
-    fees: "412",
-    amount: "4124142",
-    status: "pending",
-    date: "17/2/2020",
-    id: 1,
-  },
-  {
-    item: "car",
-    fees: "412",
-    amount: "4124142",
-    status: "pending",
-    date: "17/2/2020",
-    id: 1,
-  },
-];
-
-const onRowClick = (e) => {
-  alert(JSON.stringify(e));
-};
 
 const Comms = () => {
-  return (
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onRowClick = (e) => {
+    router.push(`/items/${e.id}`);
+  };
+
+  useEffect(() => {
+    const handleStart = (url: string) =>
+      url !== router.asPath && setIsLoading(true);
+    const handleComplete = (url: string) =>
+      url === router.asPath && setIsLoading(false);
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  });
+
+  const { data: rowData, isLoading: gridDataIsLoading } =
+    api.placedOrders.getCommOrdersByUserId.useQuery();
+
+  return isLoading ? (
+    <div className="flex h-full min-h-[60vh] w-full items-center justify-center">
+      <Spinner className="absolute h-16 w-16 p-0" />
+    </div>
+  ) : (
     <Grid
       columnDefs={columnDefs}
+      isLoading={gridDataIsLoading}
       rowData={rowData}
       onRowClick={onRowClick}
       withSearchBar
+      gridTitle="Comms"
     />
   );
 };

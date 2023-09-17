@@ -6,6 +6,7 @@ export { default as ToastContainer } from "./ToastContainer";
 export { default as Badge } from "./Badge";
 export { default as Favorites } from "./Favorites/Favorites";
 export { default as Item } from "./Item";
+export { default as Checkout } from "./Checkout";
 export { default as ProductList } from "./ProductList";
 export { default as ProductListItem } from "./ProductListItem";
 export { default as CategoryCard } from "./CategoryCard/CategoryCard";

@@ -39,24 +39,27 @@ model Session {
 }
 
 model User {
-    id              String         @id @default(uuid())
-    name            String?
-    email           String?        @unique
-    emailVerified   DateTime?
-    privacyAccepted DateTime?
-    image           String?
-    createdAt       DateTime       @default(now())
-    deletedAt       DateTime?
-    displayName     String?
-    firstName       String?
-    lastName        String?
-    password        String?
-    updatedAt       DateTime       @updatedAt
-    accounts        Account[]
-    sessions        Session[]
-    address         Address?
-    paymentMethod   PaymentMethod?
-    UuidToken       UuidToken[]
+    id               String         @id @default(uuid())
+    name             String?
+    email            String?        @unique
+    emailVerified    DateTime?
+    privacyAccepted  DateTime?
+    image            String?
+    createdAt        DateTime       @default(now())
+    deletedAt        DateTime?
+    displayName      String?
+    firstName        String?
+    lastName         String?
+    password         String?
+    updatedAt        DateTime       @updatedAt
+    accounts         Account[]
+    sessions         Session[]
+    address          Address?
+    paymentMethod    PaymentMethod?
+    UuidToken        UuidToken[]
+    sellerOrder      PlacedOrder[]  @relation(name: "SellerRelation")
+    buyerOrder       PlacedOrder[]  @relation(name: "BuyerRelation")
+    facilitatorOrder PlacedOrder[]  @relation(name: "FacilitatorRelation")
 }
 
 model Address {
@@ -86,19 +89,21 @@ model PaymentMethod {
 }
 
 model Product {
-    id          Int         @id @default(autoincrement())
+    id          Int           @id @default(autoincrement())
     title       String
-    description String      @db.Text
-    isNew       Boolean     @default(false)
-    isBusiness  Boolean     @default(false)
-    isHot       Boolean     @default(false)
-    pictures    String      @db.Text
+    description String        @db.Text
+    isNew       Boolean       @default(false)
+    isBusiness  Boolean       @default(false)
+    isHot       Boolean       @default(false)
+    isSold      Boolean       @default(false)
+    pictures    String        @db.Text
     price       Int
     fee         Int
-    owner       String      @default("Germán Beder")
+    owner       String        @default("Germán Beder")
     categoryId  Int
-    category    Category    @relation(fields: [categoryId], references: [id])
+    category    Category      @relation(fields: [categoryId], references: [id])
     UuidToken   UuidToken[]
+    Order       PlacedOrder[]
 }
 
 model Category {
@@ -121,4 +126,21 @@ model UuidToken {
     productId Int?
     createdAt DateTime  @default(now())
     deletedAt DateTime?
+}
+
+model PlacedOrder {
+    id                Int       @id @default(autoincrement())
+    status            String
+    sellerUser        User      @relation(name: "SellerRelation", fields: [sellerUserId], references: [id])
+    sellerUserId      String
+    buyerUser         User      @relation(name: "BuyerRelation", fields: [buyerUserId], references: [id])
+    buyerUserId       String
+    facilitatorUser   User?     @relation(name: "FacilitatorRelation", fields: [facilitatorUserId], references: [id])
+    facilitatorUserId String?
+    product           Product?  @relation(fields: [productId], references: [id])
+    productId         Int?
+    shippingMethod    String
+    createdAt         DateTime  @default(now())
+    updatedAt         DateTime  @updatedAt
+    deletedAt         DateTime?
 }
