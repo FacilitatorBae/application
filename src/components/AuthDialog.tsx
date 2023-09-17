@@ -13,7 +13,7 @@ const AuthDialog: React.FC<AuthDialog> = ({ open, handleOpen }) => {
       open={open}
       className="bg-transparent shadow-none"
     >
-      <SignIn message="To sell your products you need to be logged in" />
+      <SignIn message="You need to be logged in to proceed" />
     </Dialog>
   );
 };

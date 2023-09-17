@@ -13,13 +13,17 @@ const BuyModal: React.FC<BuyModalProps> = ({
   itemIdCookie,
   handleOpen,
 }) => {
-  const { data: detailsByToken, isLoading } =
-    api.uuidTokens.getDetailsByToken.useQuery({
-      token: itemIdCookie,
-    });
+  const router = useRouter<"/items/[id]">();
 
-  console.log(detailsByToken);
-  console.log(itemIdCookie);
+  const { data: detailsByToken, isLoading } = itemIdCookie
+    ? api.uuidTokens.getDetailsByToken.useQuery({
+        token: itemIdCookie,
+      })
+    : { data: null, isLoading: false };
+
+  const handleOnClick = () => {
+    router.push(`/items/${router.query.id}/checkout`);
+  };
 
   return (
     <Dialog
@@ -52,7 +56,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
           )}
           <div className="flex h-[40px] max-h-max w-[100%] flex-row items-center justify-center pt-5">
             <Button
-              // onClick={handleOnGenerate}
+              onClick={handleOnClick}
               className="ml-2 flex h-[40px] w-[40%] items-center justify-center p-0"
             >
               Checkout

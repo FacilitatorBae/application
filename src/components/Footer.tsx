@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { type FakeFooter } from "~/types";
-import { useToast } from "~/hooks/useToast ";
+import { useToast } from "~/hooks/useToast";
 
 const fakeFooterData: FakeFooter[] = [
   {

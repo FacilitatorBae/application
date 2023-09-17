@@ -15,6 +15,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/api/trpc/[trpc]", { "trpc": string }>
     | StaticRoute<"/">
     | StaticRoute<"/indexNext">
+    | DynamicRoute<"/items/[id]/checkout", { "id": string }>
     | DynamicRoute<"/items/[id]", { "id": string }>
     | StaticRoute<"/myAccount">
     | StaticRoute<"/newPost">

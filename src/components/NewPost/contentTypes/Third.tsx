@@ -13,7 +13,7 @@ import { BiChevronLeft, BiCamera } from "react-icons/bi";
 import { useNewPost } from "~/hooks/useNewPost";
 import { useRef } from "react";
 import { api } from "~/utils/api";
-import { useToast } from "~/hooks/useToast ";
+import { useToast } from "~/hooks/useToast";
 
 const Third = () => {
   const {
@@ -177,7 +177,6 @@ const Third = () => {
                     '["https://randomwordgenerator.com/img/picture-generator/57e4d5464f51a814f1dc8460962e33791c3ad6e04e5074417c2d78d1924fcd_640.jpg","https://randomwordgenerator.com/img/picture-generator/idea-3085367_640.jpg","https://randomwordgenerator.com/img/picture-generator/5fe1dd454d50b10ff3d8992cc12c30771037dbf852547848702e7dd4954b_640.jpg", "https://randomwordgenerator.com/img/picture-generator/55e1d6444e5aae14f1dc8460962e33791c3ad6e04e50744172297bd4944fcc_640.jpg"]',
                   price: newPostDetails.price || "",
                   fee: newPostDetails.fees || "",
-                  owner: "owner",
                   categoryId:
                     pickedCategories[pickedCategories.length - 1]?.id || 0,
                 });

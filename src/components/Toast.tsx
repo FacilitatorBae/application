@@ -6,7 +6,7 @@ import {
   BsX,
 } from "react-icons/bs";
 import { useEffect, useRef, useCallback } from "react";
-import { useToast } from "~/hooks/useToast ";
+import { useToast } from "~/hooks/useToast";
 import { type ReactNode } from "react";
 
 interface ToastType {

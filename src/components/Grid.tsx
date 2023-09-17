@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -7,33 +7,44 @@ import {
   Chip,
   Avatar,
   Input,
+  Spinner,
 } from "@material-tailwind/react";
 
-interface GridProps {
+interface GridProps<T> {
   columnDefs: {
     field: string;
     headerName: string;
     width?: number;
     withAvatar?: boolean;
   }[];
-  rowData: [];
+  rowData?: T[];
   onRowClick?: (rowData: {
     amount: string;
     status: string;
     date: string;
   }) => void;
   withSearchBar?: boolean;
+  isLoading?: boolean;
+  gridTitle?: string;
 }
 
-const Grid: React.FC<GridProps> = ({
+const Grid: React.FC<GridProps<any>> = ({
   columnDefs,
   rowData: initialRowData,
   onRowClick,
   withSearchBar,
+  isLoading,
+  gridTitle,
 }) => {
   const [rowData, setRowData] = useState(initialRowData);
   const [searchTerm, setSearchTerm] = useState("");
   const [chipIsOpen, setChipIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (initialRowData) {
+      setRowData(initialRowData);
+    }
+  }, [initialRowData]);
 
   const onSearch = (term: string) => {
     if (rowData) {
@@ -51,9 +62,13 @@ const Grid: React.FC<GridProps> = ({
     setRowData(initialRowData);
   };
 
-  return (
+  return isLoading ? (
+    <div className="flex h-full min-h-[60vh] w-full items-center justify-center">
+      <Spinner className="absolute h-16 w-16 p-0" />
+    </div>
+  ) : (
     <div className="flex h-full w-[70%] flex-col justify-between bg-gray-300 p-5">
-      <div className="pb-5 font-poppins text-3xl font-bold">Sales</div>
+      <div className="pb-5 font-poppins text-3xl font-bold">{gridTitle}</div>
       <div className="flex w-full flex-col justify-between pb-5">
         <div className="flex justify-between bg-gray-100 p-2">
           <Card className="w-full rounded-none">
@@ -123,7 +138,7 @@ const Grid: React.FC<GridProps> = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {rowData.map((item, index) => {
+                  {rowData?.map((item, index) => {
                     const isLast = index === rowData.length - 1;
                     const classes = isLast
                       ? "p-2"
