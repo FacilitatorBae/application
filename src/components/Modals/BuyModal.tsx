@@ -25,8 +25,6 @@ const BuyModal: React.FC<BuyModalProps> = ({
     router.push(`/items/${router.query.id}/checkout`);
   };
 
-  console.log(detailsByToken);
-
   return (
     <Dialog
       open={open}
