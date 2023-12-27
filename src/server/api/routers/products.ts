@@ -6,6 +6,13 @@ import {
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
 import { type Category } from "@prisma/client";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Define and use a default selection of fields to get type inference correctly
 const defaultProductSelect = Prisma.validator<Prisma.ProductSelect>()({
@@ -80,6 +87,10 @@ export const productsRouter = createTRPCRouter({
       },
     });
     return products;
+  }),
+  getPreSignedImgPostUrl: authenticatedProcedure.query(() => {
+    // ONCE MIGRATED TO AWS, WILL USE S3 PRESIGNED URLS. CLOUDINARY DOES NOT OFFER THAT SERVICE
+    return "https://api.cloudinary.com/v1_1/dpkfb428j/auto/upload";
   }),
   getSearchProducts: publicProcedure
     .input(
@@ -230,6 +241,18 @@ export const productsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const picsToUpload = JSON.parse(input.pictures);
+
+      const uploadPromises = picsToUpload.map(async (item) => {
+        const result = await cloudinary.uploader.upload(item);
+        if (result && result.secure_url) {
+          console.log(result.secure_url);
+          return result.secure_url;
+        }
+      });
+
+      const picturesUrls = await Promise.all(uploadPromises);
+
       const newProduct = await ctx.prisma.product.create({
         data: {
           title: input.title,
@@ -237,7 +260,7 @@ export const productsRouter = createTRPCRouter({
           isNew: input.isNew,
           isBusiness: input.isBusiness,
           isHot: input.isHot,
-          pictures: input.pictures,
+          pictures: JSON.stringify(picturesUrls),
           price: Number(input.price),
           fee: Number(input.fee),
           owner: ctx.session.user.id,

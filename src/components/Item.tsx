@@ -55,7 +55,10 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
 
   const [isFacilitateModalOpen, setIsFacilitateModalOpen] = useState(false);
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+  const [currentPicture, setCurrentPicture] = useState(0);
   const [itemIdCookie, setItemIdCookie] = useState<ItemIdCooke>();
+
+  const parsedPictures = JSON.parse(pictures);
 
   const handleBuyModalOpen = () => setIsBuyModalOpen((cur) => !cur);
 
@@ -89,6 +92,34 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
   const condition = isNew ? "Brand New" : "Used";
   const sellerCategory = isBusiness ? "Business" : "Individual";
 
+  const renderedImages = parsedPictures.map((img) => {
+    const imgIndex = parsedPictures.indexOf(img);
+    const isCurrentPic = imgIndex === currentPicture;
+    const isLastPic = imgIndex !== 3;
+    const customMarginClass = isLastPic ? "mr-[3.34%]" : "mr-[0%]";
+    const customBorderClass = isCurrentPic
+      ? "border-solid border-2 border-blue-brand"
+      : "border-none";
+    return (
+      <div
+        onClick={() => {
+          setCurrentPicture(imgIndex);
+        }}
+        className={`relative aspect-[1] w-[22.5%] rounded-sm ${customMarginClass} ${customBorderClass}`}
+      >
+        <div className="relative h-[100%]">
+          <Image
+            className="h-full w-full rounded-sm object-cover object-center"
+            src={parsedPictures[imgIndex]}
+            alt={title}
+            fill
+            unoptimized
+          />
+        </div>
+      </div>
+    );
+  });
+
   return isLoading ? (
     <div className="flex h-full min-h-[60vh] w-full items-center justify-center">
       <Spinner className="absolute h-16 w-16 p-0" />
@@ -100,53 +131,15 @@ const Item: React.FC<ProductListProps> = ({ product }) => {
         <div className="relative flex aspect-[2/1] w-[45%] flex-col">
           <div className="relative h-[80%]">
             <Image
-              className="h-full w-full object-cover object-center"
-              src={JSON.parse(pictures)[0]}
+              className="h-full w-full rounded-sm object-cover object-center"
+              src={parsedPictures[currentPicture]}
               alt={title}
               fill
               unoptimized
             />
           </div>
-          <div className="mt-[20px] flex max-h-[200px] w-full flex-row justify-between">
-            <div className="relative aspect-[1] w-[22.5%]">
-              <Image
-                className="h-full w-full object-cover object-center"
-                src={JSON.parse(pictures)[1]}
-                alt={title}
-                fill
-                unoptimized
-              />
-            </div>
-            <div className="relative aspect-[1] w-[22.5%]">
-              <Image
-                className="h-full w-full object-cover object-center"
-                src={JSON.parse(pictures)[2]}
-                alt={title}
-                fill
-                unoptimized
-              />
-            </div>
-            <div className="relative aspect-[1] w-[22.5%]">
-              <Image
-                className="h-full w-full object-cover object-center"
-                src={JSON.parse(pictures)[0]}
-                alt={title}
-                fill
-                unoptimized
-              />
-            </div>
-            <div className="relative aspect-[1] w-[22.5%]">
-              <div className="absolute z-10 flex h-full w-full cursor-pointer items-center justify-center bg-white/70 backdrop-blur-[2px]">
-                <span className="	text-xl font-bold">View All</span>
-              </div>
-              <Image
-                className="h-full w-full object-cover object-center"
-                src={JSON.parse(pictures)[0]}
-                alt={title}
-                fill
-                unoptimized
-              />
-            </div>
+          <div className="mt-[20px] flex max-h-[200px] w-full flex-row">
+            {renderedImages}
           </div>
         </div>
 

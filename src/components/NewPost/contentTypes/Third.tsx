@@ -8,12 +8,14 @@ import {
   Button,
   Spinner,
 } from "@material-tailwind/react";
-import { useEffect } from "react";
-import { BiChevronLeft, BiCamera } from "react-icons/bi";
+import { useCallback, useEffect, useState } from "react";
+import { BiChevronLeft, BiCamera, BiXCircle } from "react-icons/bi";
 import { useNewPost } from "~/hooks/useNewPost";
 import { useRef } from "react";
 import { api } from "~/utils/api";
 import { useToast } from "~/hooks/useToast";
+import Image from "next/image";
+import axios from "axios";
 
 const Third = () => {
   const {
@@ -26,6 +28,8 @@ const Third = () => {
   } = useNewPost();
   const toast = useToast();
 
+  const [pics, setPics] = useState([]);
+
   const {
     mutate,
     isLoading,
@@ -33,6 +37,9 @@ const Third = () => {
     isError,
     data: postedData,
   } = api.products.newProduct.useMutation();
+
+  const { data: preSignedImgPostUrl } =
+    api.products.getPreSignedImgPostUrl.useQuery();
 
   useEffect(() => {
     if (activeStep === 3 && isSuccess && postedData.id) {
@@ -55,15 +62,68 @@ const Third = () => {
   const handleClick = () => {
     hiddenFileInput?.current?.click();
   };
+
   const handleChange = (event) => {
     const filesUploaded = event.target.files;
+    const qtyOfPicsAfterUpload = [...pics, ...filesUploaded];
 
-    // Hardcoding images
-    updateNewPostDetails("pictures", [
-      "https://randomwordgenerator.com/img/picture-generator/g2ebc46d651de9da6b29d2194b428cb741ebe008e6f87e5e93bef0c089a2a652b1ba76f5fb0d2af1b25d9df34f0adab86_640.jpg",
-      "https://randomwordgenerator.com/img/picture-generator/idea-3085367_640.jpg",
-      "https://randomwordgenerator.com/img/picture-generator/54e4dd4b4a5ba514f1dc8460962e33791c3ad6e04e507440742a7ed1954cc7_640.jpg",
-    ]);
+    if (qtyOfPicsAfterUpload.length > 4) {
+      toast.error(`Imgs are limited to 4`);
+    } else {
+      Object.values(filesUploaded).forEach((item) => {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          const imageBlob = event.target.result;
+          setPics((prev) => [...prev, imageBlob]);
+        };
+        reader.readAsDataURL(item);
+      });
+    }
+  };
+
+  const onRemovePictureClick = (pictureUrl: string) => {
+    const newPics = pics.filter(
+      (item) => pics.indexOf(item) !== pics.indexOf(pictureUrl)
+    );
+    setPics(newPics);
+  };
+
+  useEffect(() => {
+    updateNewPostDetails("pictures", pics);
+  }, [pics]);
+
+  const postTest = () => {
+    // CLOUDINARY ONLY ALLOWS SINGLE FILE TO BE UPLOADED AT A TIME. WHEN MOVING TO AWS S3 WILL TRY TO MAKE SINGLE HTTP REQUEST
+    const imgUrls = [];
+    if (preSignedImgPostUrl) {
+      pics.forEach((pic) => {
+        axios
+          .post(preSignedImgPostUrl, {
+            file: pic,
+            upload_preset: "zsffzfbc",
+          })
+          .then((res) => {
+            imgUrls.push(res.data.secure_url);
+            if (imgUrls.length === pics.length) {
+              mutate({
+                title: newPostDetails.title || "",
+                description: newPostDetails.description || "",
+                isNew: newPostDetails.condition === "New",
+                isBusiness: false,
+                isHot: false,
+                pictures: JSON.stringify(imgUrls),
+                price: newPostDetails.price || "",
+                fee: newPostDetails.fees || "",
+                categoryId:
+                  pickedCategories[pickedCategories.length - 1]?.id || 0,
+              });
+            }
+          })
+          .catch((err) => {
+            console.log("error in request", err);
+          });
+      });
+    }
   };
 
   return (
@@ -137,7 +197,7 @@ const Third = () => {
               />
             </div>
 
-            <div className="mb-10 flex w-full justify-center rounded-md border-[1px] border-solid border-gray-400">
+            <div className="mb-5 flex w-full justify-center rounded-md border-[1px] border-solid border-gray-400">
               <div
                 className="flex h-20 w-full cursor-pointer flex-col items-center justify-center"
                 onClick={handleClick}
@@ -155,6 +215,35 @@ const Third = () => {
                 </span>
               </div>
             </div>
+            {pics && (
+              <div className="mb-5 flex w-full flex-row">
+                {pics.map((item) => {
+                  const customClass =
+                    pics.indexOf(item) !== 3 ? "mr-[6.67%]" : "mr-[0%]";
+                  return (
+                    <div
+                      className={`relative aspect-[1] w-[20%] ${customClass}`}
+                    >
+                      <button
+                        onClick={() => {
+                          onRemovePictureClick(item);
+                        }}
+                        className="absolute right-0 z-[999] mr-2 mt-2 text-xl"
+                      >
+                        {<BiXCircle className="text-gray-800" />}
+                      </button>
+                      <Image
+                        className="mr-1 object-cover object-center"
+                        src={item}
+                        alt="visa"
+                        unoptimized
+                        fill
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             <Button
               className="flex items-center justify-center"
               disabled={
@@ -167,19 +256,19 @@ const Third = () => {
                 isLoading
               }
               onClick={() => {
-                mutate({
+                postTest();
+                /*  mutate({
                   title: newPostDetails.title || "",
                   description: newPostDetails.description || "",
                   isNew: newPostDetails.condition === "New",
                   isBusiness: false,
                   isHot: false,
-                  pictures:
-                    '["https://randomwordgenerator.com/img/picture-generator/57e4d5464f51a814f1dc8460962e33791c3ad6e04e5074417c2d78d1924fcd_640.jpg","https://randomwordgenerator.com/img/picture-generator/idea-3085367_640.jpg","https://randomwordgenerator.com/img/picture-generator/5fe1dd454d50b10ff3d8992cc12c30771037dbf852547848702e7dd4954b_640.jpg", "https://randomwordgenerator.com/img/picture-generator/55e1d6444e5aae14f1dc8460962e33791c3ad6e04e50744172297bd4944fcc_640.jpg"]',
+                  pictures: JSON.stringify(pics),
                   price: newPostDetails.price || "",
                   fee: newPostDetails.fees || "",
                   categoryId:
                     pickedCategories[pickedCategories.length - 1]?.id || 0,
-                });
+                }); */
               }}
             >
               Publish
