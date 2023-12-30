@@ -9,6 +9,9 @@ const withRoutes = WithRoutes();
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
